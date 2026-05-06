@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Egor Ermakov, 2023
+# c795b1f4ef0923d5789af110b80109e2_4bdb118, 2023
 # Vedun <ua3elr@gmail.com>, 2023
 # Geoff Gigg <geoffgigg@hotmail.com>, 2023
 # Вячеслав Волошин <vol_vel@mail.ru>, 2023

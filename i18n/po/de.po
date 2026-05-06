@@ -7,7 +7,7 @@
 # Der Dings, 2023
 # Dolphin Oracle <dolphinoracle@gmail.com>, 2023
 # anticapitalista <anticapitalista@riseup.net>, 2023
-# Vinzenz Vietzke <vinz@vinzv.de>, 2023
+# Vinzenz Vietzke <vv@muibox.de>, 2023
 # alfredmale <maledora4@googlemail.com>, 2023
 # aer, 2023
 # fehlix, 2023

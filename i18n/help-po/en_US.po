@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the user-installed-packages-help package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Brian Masinick, 2026
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: user-installed-packages-help\n"
+"Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
+"POT-Creation-Date: 2023-03-27 19:23+0200\n"
+"PO-Revision-Date: 2023-03-27 16:20+0000\n"
+"Last-Translator: Brian Masinick, 2026\n"
+"Language-Team: English (United States) (https://app.transifex.com/anticapitalista/teams/10162/en_US/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "User Installed Packages Help"
+msgstr "User Installed Packages Help"
+
+msgid ""
+"This application is intended to facilitate the re-installation of packages "
+"that the user has added to the default installation."
+msgstr ""
+"This application is intended to facilitate the re-installation of packages "
+"that the user has added to the default installation."
+
+msgid ""
+"It can display a list of packages manually installed by the user that can be"
+" saved in a simple text file. Furthermore, the application allows loading a "
+"saved list of packages for review and selection to be reinstalled. Such a "
+"procedure is especially easy and useful after a new system installation."
+msgstr ""
+"It can display a list of packages manually installed by the user that can be"
+" saved in a simple text file. Furthermore, the application allows loading a "
+"saved list of packages for review and selection to be reinstalled. Such a "
+"procedure is especially easy and useful after a new system installation."
+
+msgid "There are two options to choose from:"
+msgstr "There are two options to choose from:"
+
+msgid "quickly and easily create a list of those packages."
+msgstr "quickly and easily create a list of those packages."
+
+msgid ""
+"use that list in another location to review and reinstall those packages, if"
+" still available."
+msgstr ""
+"use that list in another location to review and reinstall those packages, if"
+" still available."
+
+msgid "Create a list of user-installed packages"
+msgstr "Create a list of user-installed packages"
+
+msgid "A list of user-installed packages is displayed."
+msgstr "A list of user-installed packages is displayed."
+
+msgid ""
+"Note: Packages of installed Linux kernels or NVIDIA graphics drivers will "
+"not be listed."
+msgstr ""
+"Note: Packages of installed Linux kernels or NVIDIA graphics drivers will "
+"not be listed."
+
+msgid ""
+"Press [Save List] and select the location where the package list should be "
+"saved."
+msgstr ""
+"Press [Save List] and select the location where the package list should be "
+"saved."
+
+msgid "Open a previously saved list to install selected packages"
+msgstr "Open a previously saved list to install selected packages"
+
+msgid "Select the package list you wish to install."
+msgstr "Select the package list you wish to install."
+
+msgid ""
+"Uncheck any packages in the displayed list that you do not wish to install."
+msgstr ""
+"Uncheck any packages in the displayed list that you do not wish to install."
+
+msgid ""
+"A notification is provided for any missing packages that can no longer be "
+"installed."
+msgstr ""
+"A notification is provided for any missing packages that can no longer be "
+"installed."
+
+msgid "Press [OK] and the selected packages will be installed."
+msgstr "Press [OK] and the selected packages will be installed."
+
+msgid "Unavailable packages will be listed"
+msgstr "Unavailable packages will be listed"
+
+msgid "Packages that are unavailable or uninstallable will be listed."
+msgstr "Packages that are unavailable or uninstallable will be listed."
+
+msgid ""
+"Such a situation arises when the main package or one of its dependencies can"
+" not function within the new system."
+msgstr ""
+"Such a situation arises when the main package or one of its dependencies can"
+" not function within the new system."
+
+msgid ""
+"Press [Save List] and select the location to save the list of unavailable "
+"packages."
+msgstr ""
+"Press [Save List] and select the location to save the list of unavailable "
+"packages."
+
+msgid "Packages available will be installed"
+msgstr "Packages available will be installed"
+
+msgid "The installation process is started within a new terminal window."
+msgstr "The installation process is started within a new terminal window."
+
+msgid "Authentication and confirmation are required to perform installation."
+msgstr "Authentication and confirmation are required to perform installation."
+
+#. TRANSLATORS:
+#. A question "Do you want to continue? [Y/n]" is displayed in the terminal
+#. window. The question could be displayed translated, including [Y/N] for
+#. translated [Yes/No].
+msgid "Press [N] to cancel."
+msgstr "Press [N] to cancel."
+
+msgid ""
+"To close the terminal window after the installation process finishes, press "
+"[Enter]."
+msgstr ""
+"To close the terminal window after the installation process finishes, press "
+"[Enter]."
+
+msgid "Version:"
+msgstr "Version:"
+
+msgid "Last updated:"
+msgstr "Last updated:"

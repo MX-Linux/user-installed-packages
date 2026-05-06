@@ -1,3 +1,13 @@
+user-installed-packages (26.05.1) mx; urgency=medium
+
+  * Check package cache before building the install list
+    - warn and offer apt update if package cache is empty or outdated
+    - add please-wait progress dialog during package availability checks
+    - remove redundant apt update from uip-apt-install (now handled by cache check)
+  * Translations refresh
+
+ -- fehlix <fehlix@mxlinux.org>  Wed, 06 May 2026 13:37:24 -0400
+
 user-installed-packages (25.11.01) mx; urgency=medium
 
   * Adjust polkit agent detection pattern

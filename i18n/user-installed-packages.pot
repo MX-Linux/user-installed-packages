@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-31 03:31+0200\n"
+"POT-Creation-Date: 2026-05-06 19:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,6 +117,11 @@ msgstr ""
 msgid "Install packages"
 msgstr ""
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's list are available.
+msgid "Please wait, checking package availability ..."
+msgstr ""
+
 msgid "Missing Packages"
 msgstr ""
 
@@ -132,10 +137,72 @@ msgstr ""
 msgid "UIP list of missing packages could not be saved."
 msgstr ""
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr ""
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
+msgstr ""
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages, refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages, refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages, refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages, refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr ""
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
 msgstr ""
 
 #. TRANSLATORS:
