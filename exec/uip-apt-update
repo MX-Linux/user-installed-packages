@@ -11,6 +11,10 @@ APT_SUCCESS_CONF="APT::Update::Post-Invoke-Success"
 UIP_UPDATE_STAMP="/tmp/uip-$(logname)-update-stamp"
 UIP_UPDATE_STAMP_CONF="${APT_SUCCESS_CONF}::=touch ${UIP_UPDATE_STAMP} 2>/dev/null || true"
 
+if [ -f "$UIP_UPDATE_STAMP" ]; then
+    rm -f "$UIP_UPDATE_STAMP"
+fi
+
 UIP_STAMP_USED=false
 if ! apt-config dump "$APT_SUCCESS_CONF" 2>/dev/null | grep -q -E "touch\s+$APT_UPDATE_STAMP"; then
     set -- "-o" "$UIP_UPDATE_STAMP_CONF" "$@"
@@ -22,6 +26,9 @@ APT_RET=$?
 
 if $UIP_STAMP_USED && [ -f "$UIP_UPDATE_STAMP" ]; then
     chown "$(logname 2>/dev/null):" "$UIP_UPDATE_STAMP" 2>/dev/null || true
+    if [ -f "$APT_UPDATE_STAMP" ]; then
+        touch "$APT_UPDATE_STAMP"
+    fi
 fi
 
 exit $APT_RET
