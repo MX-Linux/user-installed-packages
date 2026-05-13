@@ -3,7 +3,7 @@ inames = [
          package_name,
          ]
 
-sizes = [ 8, 16, 22, 24, 32, 48, 64, 96, 128, 256, 512 ]
+sizes = [ 16, 22, 24, 32, 48, 64, 128, 256 ]
 
 icon_dir = get_option('datadir') / 'icons'
 pix_maps = get_option('datadir') / 'pixmaps'

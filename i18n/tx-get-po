@@ -50,7 +50,7 @@ which isoquery >/dev/null || {
 
 cat <<EOF > .tx/config
 [main]
-host = https://app.transifex.com
+host = https://www.transifex.com
 
 EOF
 
@@ -107,6 +107,7 @@ LINGUAS
 
     for po in "$PODIR"/*.po; do
         [ -e "$po" ] || continue
+        [ -z "${po##*en_US.po}" ] && rm "$po" && continue 
         lang=${po##*/}
         lang=${lang%.po}
         printf '%s ' "${lang}"

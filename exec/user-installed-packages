@@ -26,6 +26,20 @@ export BTN_SAVE=$(gettext 'Save List') ; BTN_SAVE+='!document-save'
 export UIP_ICON="user-installed-packages"
 [ -e "$UIP_ICON" ] && UIP_ICON=/usr/share/pixmaps/${UIP_ICON}.svg
 export UIP_CLASS="user-installed-packages"
+export UIP_SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+export BTN_CHANGELOG=$(gettext "Changelog") ; BTN_CHANGELOG+='!view-history'
+export BTN_LICENSE=$(gettext "License")     ; BTN_LICENSE+='!license'
+export UIP_ABOUT=$(gettext "MX User Installed Packages")
+export UIP_ABOUT_TITLE=$(gettext "About MX User Installed Packages")
+export UIP_ABOUT_TEXT=$(gettext "An app to list and re-install user installed packages.")
+export UIP_CHANGELOG_TITLE=$(gettext "MX User Installed Packages Changelog")
+export UIP_VERSION="@VERSION@"
+export UIP_URL="https://mxlinux.org"
+
+case "${1:-}" in
+    --version|-V) echo "$UIP_VERSION"; exit 0 ;;
+esac
 
 export INSTALLED_PACKAGES="/usr/share/antiX/installed-packages.txt"
 if [ ! -f $INSTALLED_PACKAGES ]; then
@@ -105,7 +119,6 @@ main() {
 
     YAD=(yad
         --title="$TITLE_MAIN" --class="$UIP_CLASS" --window-icon="$UIP_ICON"
-#        --title="$TITLE_MAIN" --class="$UIP_CLASS" --window-icon=user-installed-packages
         --borders=20 --center --width=600 --height=350
         --form --separator=" "
         --text="$TEXT_MAIN" --text-align=left
@@ -117,24 +130,74 @@ main() {
         )
 
     "${YAD[@]}"   ## >/dev/null
-
+    exit 0
 }
 
-#function uip_about
+show_about() {
+    local text YAD_ABOUT
+    text="<b><big>${UIP_ABOUT}</big></b>\n"
+    text+="\nVersion: ${UIP_VERSION}\n"
+    text+="\n<b>${UIP_ABOUT_TEXT}</b>\n"
+    text+="\n<a href=\"${UIP_URL}\">${UIP_URL}</a>\n"
+    text+="\nCopyright $(printf '\xc2\xa9') MX Linux\n"
+    YAD_ABOUT=(yad
+        --title="$UIP_ABOUT_TITLE"
+        --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+        --image="$UIP_ICON" --image-on-top
+        --borders=20 --center --width=420
+        --text="$text" --text-align=center
+        --button="${BTN_CHANGELOG}:2"
+        --button="${BTN_LICENSE}:3"
+        --button="${BTN_CLOSE}:1"
+        )
+    "${YAD_ABOUT[@]}"
+    case $? in
+        2) show_changelog ;;
+        3) show_license   ;;
+    esac
+}
+
+show_changelog() {
+    local width height YAD_CHANGELOG
+    local W H
+    width=$(( ${W:-1800} * 4 / 10 ))
+    height=$(( ${H:-1080} * 2 / 3 ))
+    local ORIGIN="MX repository"
+    local URI="https://mxrepo.com/mx/repo/pool/@CHANGEPATH@.changelog"
+    local changelog="/usr/share/doc/user-installed-packages/changelog.gz"
+    YAD_CHANGELOG=(yad
+        --title="$UIP_CHANGELOG_TITLE"
+        --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+        --width="$width" --height="$height"
+        --center --margins=7 --borders=5
+        --button="${BTN_CLOSE}:1"
+        --text-info
+        )
+    if [ -s "$changelog" ]; then
+        zcat "$changelog" 2>&1 | "${YAD_CHANGELOG[@]}"
+    else
+        PAGER=cat apt-get -qq \
+            -o "Acquire::Changelogs::URI::Origin::${ORIGIN}=${URI}" \
+            changelog user-installed-packages 2>&1 | "${YAD_CHANGELOG[@]}"
+    fi
+    show_about
+}
+
+show_license() {
+    local viewer
+    for v in mx-viewer antix-viewer sensible-browser x-www-browser xdg-open; do
+        viewer=$(command -v "$v" 2>/dev/null) && break
+    done
+    [ -n "$viewer" ] && "$viewer" "/usr/share/user-installed-packages/license.html" 2>/dev/null &
+    show_about
+}
 
 uip_about() {
-    # ugly hack: run uip-about.py as symlink in order to display icon in dock-like taskbar
-    local uip_about=/usr/libexec/user-installed-packages/uip-about.py
-    local uip_link=/usr/libexec/user-installed-packages/user-installed-packages
-    local real_path=$(realpath "$uip_about" 2>/dev/null)
-
-    if [ -L "$uip_link" ] && [ x"$real_path" == x"$(realpath "$uip_link" 2>/dev/null)" ]; then
-       uip_about="$uip_link"
-    fi
-    python3 "$uip_about"
+    exec 9>/tmp/${UIP_CLASS}-about-${UID}.lock
+    flock -n 9 || return
+    show_about
 }
-
-export -f uip_about
+export -f uip_about show_about show_changelog show_license
 
 
 #function uip_help
@@ -142,7 +205,6 @@ export -f uip_about
 uip_help() {
     local dir="/usr/share/user-installed-packages"
     local help="help.html"
-    #local uip_help="/usr/share/user-installed-packages/help.html"
     local uip_help="$dir/$help"
     local language="${LANGUAGE//:/ } "
     language+="${LC_ALL%%.*} ${LC_ALL%%_*} "
@@ -497,7 +559,7 @@ NotUsed
 
 
     #Install packages in separate terminal
-    TERMINAL_BASENAME=$(basename -s .wrapper  $(realpath $(which x-terminal-emulator)))
+    TERMINAL_BASENAME=$(basename -s .wrapper  $(realpath $(command -v x-terminal-emulator)))
     case "$TERMINAL_BASENAME"  in
         xfce4-terminal)
             xfce4-terminal --disable-server -x bash -c "$CMD ${UIP_INSTALLABLE[*]}; $HLD"
@@ -632,13 +694,20 @@ uip_check_apt_cache() {
         hold_msg=${hold_msg//\"/$RDQ}
         hold_msg=${hold_msg//;/,}
 
+        local uip_apt_update="/usr/libexec/user-installed-packages/uip-apt-update"
         if [ -x /usr/bin/pkexec ] && pgrep -u "$(id -u)" -f "$polkit_pattern" >/dev/null; then
-            update_cmd="/usr/bin/pkexec apt update"
+            if [ -x "${uip_apt_update}" ]; then
+                update_cmd="/usr/bin/pkexec ${uip_apt_update}"
+            else
+                update_cmd="/usr/bin/pkexec apt update"
+            fi
         else
             update_cmd="sudo -k; sudo -v && sudo apt update"
         fi
 
-        TERMINAL_BASENAME=$(basename -s .wrapper "$(realpath "$(which x-terminal-emulator)")")
+        local before_update
+        before_update=$(date +%s)
+        TERMINAL_BASENAME=$(basename -s .wrapper "$(realpath "$(command -v x-terminal-emulator)")")
         case "$TERMINAL_BASENAME" in
             xfce4-terminal)
                 xfce4-terminal --disable-server -x bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
@@ -647,6 +716,28 @@ uip_check_apt_cache() {
                 x-terminal-emulator -e bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
                 ;;
         esac
+        local update_ok=false t
+        [ -f /var/lib/apt/periodic/update-stamp ] &&
+            t=$(stat -c %Y /var/lib/apt/periodic/update-stamp 2>/dev/null) &&
+            (( t > before_update )) && update_ok=true
+
+        if ! $update_ok; then
+            local fail_msg
+            # TRANSLATORS:
+            # Shown after 'apt update' fails (e.g. no internet connection).
+            fail_msg=$(gettext 'Package cache update failed. Check your internet connection or APT sources lists.')
+            local YAD_FAIL
+            YAD_FAIL=(yad
+                --title="$TITLE_WARN" --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+                --borders=20 --center --width=520
+                --image=dialog-error
+                --text="$fail_msg" --text-align=left
+                --button="${BTN_CONTINUE}:0"
+                --button="${BTN_CLOSE}:1"
+                )
+            "${YAD_FAIL[@]}"
+            (( $? == 0 )) && return 0 || return 1
+        fi
         return 0
     fi
 

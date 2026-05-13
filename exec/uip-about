@@ -1,0 +1,91 @@
+#!/bin/bash
+
+PKGNAME=user-installed-packages
+source gettext.sh
+export TEXTDOMAIN=$PKGNAME
+
+CLASS=$PKGNAME
+ICON=$PKGNAME
+ICON_IMAGE="/usr/share/pixmaps/${PKGNAME}.svg"
+[ -f "$ICON_IMAGE" ] || ICON_IMAGE="$ICON"
+
+ABOUT_TITLE=$(gettext "About MX User Installed Packages")
+ABOUT=$(gettext "MX User Installed Packages")
+ABOUT_TEXT=$(gettext "An app to list and re-install user installed packages.")
+BTN_CHANGELOG=$(gettext "Changelog")  ; BTN_CHANGELOG+="!view-history"
+BTN_LICENSE=$(gettext "License")      ; BTN_LICENSE+="!license"
+BTN_CLOSE=$(gettext "Close")          ; BTN_CLOSE+="!window-close"
+CHANGELOG_TITLE=$(gettext "MX User Installed Packages Changelog")
+LICENSE_TITLE=$(gettext "MX User Installed Packages License")
+
+VERSION="@VERSION@"
+URL="https://mxlinux.org"
+
+show_about() {
+    local text
+    text="<b><big>${ABOUT}</big></b>\n"
+    text+="\nVersion: ${VERSION}\n"
+    text+="\n<b>${ABOUT_TEXT}</b>\n"
+    text+="\n<a href=\"${URL}\">${URL}</a>\n"
+    text+="\nCopyright $(printf '\xc2\xa9') MX Linux\n"
+
+    YAD_ABOUT=(yad
+        --title="$ABOUT_TITLE"
+        --class="$CLASS" --window-icon="$ICON_IMAGE"
+        --image="$ICON_IMAGE" --image-on-top
+        --borders=20 --center --width=420
+        --text="$text" --text-align=center
+        --button="${BTN_CHANGELOG}:2"
+        --button="${BTN_LICENSE}:3"
+        --button="${BTN_CLOSE}:1"
+        )
+    "${YAD_ABOUT[@]}"
+    case $? in
+        2) show_changelog ;;
+        3) show_license   ;;
+    esac
+}
+
+show_changelog() {
+    local W H width height
+    #read -r W H < <(xdotool getdisplaygeometry 2>/dev/null)
+    width=$((  ${W:-1800} * 4 / 10 ))
+    height=$(( ${H:-1080} * 2 / 3  ))
+
+    local ORIGIN="MX repository"
+    local URI="https://mxrepo.com/mx/repo/pool/@CHANGEPATH@.changelog"
+    local changelog="/usr/share/doc/user-installed-packages/changelog.gz"
+    
+    YAD_CHANGELOG=(yad
+        --title="$CHANGELOG_TITLE"
+        --class="$CLASS" --window-icon="$ICON_IMAGE"
+        --width="$width" --height="$height"
+        --center --margins=7 --borders=5
+        --button="${BTN_CLOSE}:1"
+        --text-info
+        )
+
+    if [ -s "$changelog" ]; then
+        zcat "$changelog" 2>&1 | "${YAD_CHANGELOG[@]}"
+    else
+        PAGER=cat apt-get -qq \
+            -o "Acquire::Changelogs::URI::Origin::${ORIGIN}=${URI}" \
+            changelog "$PKGNAME" 2>&1 | "${YAD_CHANGELOG[@]}"
+    fi
+    show_about
+}
+
+show_license() {
+    local viewer
+    for v in mx-viewer antix-viewer sensible-browser x-www-browser xdg-open; do
+        viewer=$(command -v "$v" 2>/dev/null) && break
+    done
+    [ -n "$viewer" ] && "$viewer" "/usr/share/${PKGNAME}/license.html" 2>/dev/null &
+    show_about
+}
+
+case "${1:-}" in
+    --changelog|-c) show_changelog ;;
+    --license|-l)   show_license   ;;
+    *)              show_about     ;;
+esac

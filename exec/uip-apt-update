@@ -1,0 +1,18 @@
+#!/usr/bin/sh
+
+# apt update policy wrapper
+# part of user-installed-packages
+# to allow localized authentication messages displayed
+
+UIP_PERIODIC_DIR="/var/lib/apt/periodic"
+UIP_UPDATE_STAMP="$UIP_PERIODIC_DIR/update-stamp"
+
+UIP_APT_SUCCESS_CONF="APT::Update::Post-Invoke-Success"
+UIP_UPDATE_STAMP_CONF="$UIP_APT_SUCCESS_CONF::=touch $UIP_UPDATE_STAMP 2>/dev/null || true"
+
+if ! apt-config dump "$UIP_APT_SUCCESS_CONF" 2>/dev/null | grep -q -E "touch\s+$UIP_UPDATE_STAMP"; then
+    [ -d "$UIP_PERIODIC_DIR" ] || mkdir -p "$UIP_PERIODIC_DIR"  2>/dev/null || true
+    set -- "-o" "$UIP_UPDATE_STAMP_CONF" "$@"
+fi
+
+/usr/bin/apt update  "$@"

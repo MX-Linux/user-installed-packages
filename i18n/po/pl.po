@@ -8,16 +8,17 @@
 # James Bowlin <BitJam@gmail.com>, 2023
 # Marcin Karpezo <marcin@karpezo.pl>, 2023
 # Erne D, 2023
-# MX Linux Polska <mxlinuxpl@gmail.com>, 2023
+# MX Linux Polska <mxlinuxpl@gmail.com>, 2026
+# Marek Adamski, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-27 20:37+0200\n"
+"POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: MX Linux Polska <mxlinuxpl@gmail.com>, 2023\n"
+"Last-Translator: Marek Adamski, 2026\n"
 "Language-Team: Polish (https://app.transifex.com/anticapitalista/teams/10162/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 msgid "About"
-msgstr "O"
+msgstr "Informacje"
 
 msgid "Close"
 msgstr "Zamknij"
@@ -42,6 +43,26 @@ msgstr "OK"
 #. installed by the user.
 msgid "Save List"
 msgstr "Zapisz listę"
+
+msgid "Changelog"
+msgstr "Dziennik zmian"
+
+msgid "License"
+msgstr "Licencja"
+
+msgid "MX User Installed Packages"
+msgstr "MX Pakiety zainstalowane przez użytkownika"
+
+msgid "About MX User Installed Packages"
+msgstr "O programie MX Pakiety zainstalowane przez użytkownika"
+
+msgid "An app to list and re-install user installed packages."
+msgstr ""
+"Aplikacja do tworzenia listy i reinstalacji pakietów zainstalowanych przez "
+"użytkownika."
+
+msgid "MX User Installed Packages Changelog"
+msgstr "Dziennik zmian aplikacji MX Pakiety zainstalowane przez użytkownika"
 
 msgid "Date:"
 msgstr "Data:"
@@ -136,6 +157,12 @@ msgstr "Wybierz, które pakiety chcesz zainstalować:"
 msgid "Install packages"
 msgstr "Zainstaluj pakiety:"
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's
+#. list are available.
+msgid "Please wait, checking package availability ..."
+msgstr "Proszę czekać, sprawdzam dostępność pakietu..."
+
 msgid "Missing Packages"
 msgstr "Brakujące pakiety"
 
@@ -151,11 +178,90 @@ msgstr "[OK] Zapisano listę brakujących pakietów:"
 msgid "UIP list of missing packages could not be saved."
 msgstr "Lista brakujących pakietów nie mogła zostać zapisana."
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr "Naciśnij Enter, aby wyjść"
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
 msgstr "Instalacja wybranych pakietów, prośba o uwierzytelnienie"
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package
+#. cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr "Ostrzeżenie dotyczące pamięci podręcznej pakietów"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr "Aktualizuj teraz"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr "Kontynuuj mimo wszystko"
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not
+#. translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr ""
+"Czy uruchomić teraz APT_UPDATE, aby odświeżyć pamięć podręczną pakietów?"
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr "Pamięć podręczna pakietów jest pusta."
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] "Pamięć podręczna pakietów nie była odświeżana od %d dnia."
+msgstr[1] "Pamięć podręczna pakietów nie była odświeżana od %d dni."
+msgstr[2] "Pamięć podręczna pakietów nie była odświeżana od %d dni."
+msgstr[3] "Pamięć podręczna pakietów nie była odświeżana od %d dni."
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr "Pamięć podręczna pakietów może być nieaktualna."
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr "Aktualizowanie pamięci podręcznej pakietów, proszę się uwierzytelnić"
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
+msgstr "Naciśnij Enter, aby kontynuować"
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -248,33 +354,16 @@ msgstr ""
 #. TRANSLATORS:
 #. Keywords to search in the menu. Hint: Add translated keywords to existing.
 msgid "apt;install;package;uip;"
-msgstr "apt;install;package;uip;"
-
-msgid "MX User Installed Packages"
-msgstr "MX Pakiety zainstalowane przez użytkownika"
-
-msgid "About MX User Installed Packages"
-msgstr "O programie MX Pakiety zainstalowane przez użytkownika"
-
-msgid "An app to list and re-install user installed packages."
-msgstr ""
-"Aplikacja do tworzenia listy i reinstalacji pakietów zainstalowanych przez "
-"użytkownika."
-
-msgid "Changelog"
-msgstr "Dziennik zmian"
-
-msgid "MX User Installed Packages Changelog"
-msgstr "Dziennik zmian aplikacji MX Pakiety zainstalowane przez użytkownika"
-
-msgid "License"
-msgstr "Licencja"
-
-msgid "MX User Installed Packages License"
-msgstr "Licencja aplikacji MX Pakiety zainstalowane przez użytkownika"
+msgstr "apt;instaluj;pakiet;uip;"
 
 msgid "Authentication is required to install selected packages"
 msgstr "Do instalacji wybranych pakietów wymagane jest uwierzytelnienie"
 
 msgid "Install selected packages"
 msgstr "Zainstaluj wybrane pakiety"
+
+msgid "Authentication is required to update the package cache"
+msgstr ""
+
+msgid "Update package cache"
+msgstr ""

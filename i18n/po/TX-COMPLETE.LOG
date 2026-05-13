@@ -1,31 +1,30 @@
 # Transifex resource user-installed-packages-mx 
 # with minimum completion percent 30%
-# generated at Wed, 06 May 2026 12:27:11 -0500
+# generated at Tue, 12 May 2026 18:12:07 -0500
    Nr.		Cnt.	 Compl.		Code		Language
    ---		----	 ------		----		--------
-     1		  59	   100%    	ca      	ca	Catalan; Valencian
-     2		  59	   100%    	de      	de	German
-     3		  59	   100%    	el      	el	Greek, Modern (1453-)
-     4		  59	   100%    	es      	es	Spanish; Castilian
-     5		  59	   100%    	es_ES   	es	Spanish; Castilian @ Spain
-     6		  59	   100%    	fi      	fi	Finnish
-     7		  59	   100%    	fr      	fr	French
-     8		  59	   100%    	fr_BE   	fr	French @ Belgium
-     9		  59	   100%    	gl_ES   	gl	Galician @ Spain
-    10		  59	   100%    	hu      	hu	Hungarian
-    11		  59	   100%    	it      	it	Italian
-    12		  59	   100%    	ja      	ja	Japanese
-    13		  59	   100%    	nb      	nb	Bokmål, Norwegian; Norwegian Bokmål
-    14		  59	   100%    	nl      	nl	Dutch; Flemish
-    15		  59	   100%    	pt      	pt	Portuguese
-    16		  59	   100%    	pt_BR   	pt	Portuguese @ Brazil
-    17		  59	   100%    	ru      	ru	Russian
-    18		  59	   100%    	sl      	sl	Slovenian
-    19		  59	   100%    	sq      	sq	Albanian
-    20		  59	   100%    	sv      	sv	Swedish
-    21		  59	   100%    	tr      	tr	Turkish
-    22		  59	   100%    	zh_CN   	zh	Chinese @ China
-    23		  58	    98%    	pl      	pl	Polish
-    24		  58	    98%    	ru_RU   	ru	Russian @ Russian Federation
-    25		  50	    84%    	nl_BE   	nl	Dutch; Flemish @ Belgium
-    26		  19	    32%    	he_IL   	he	Hebrew @ Israel
+     1		  71	   100%    	de      	de	German
+     2		  68	    95%    	ca      	ca	Catalan; Valencian
+     3		  68	    95%    	es      	es	Spanish; Castilian
+     4		  68	    95%    	es_ES   	es	Spanish; Castilian @ Spain
+     5		  68	    95%    	nl      	nl	Dutch; Flemish
+     6		  68	    95%    	pl      	pl	Polish
+     7		  68	    95%    	pt      	pt	Portuguese
+     8		  68	    95%    	pt_BR   	pt	Portuguese @ Brazil
+     9		  68	    95%    	sq      	sq	Albanian
+    10		  68	    95%    	sv      	sv	Swedish
+    11		  59	    83%    	el      	el	Greek, Modern (1453-)
+    12		  59	    83%    	fi      	fi	Finnish
+    13		  59	    83%    	fr      	fr	French
+    14		  59	    83%    	fr_BE   	fr	French @ Belgium
+    15		  59	    83%    	gl_ES   	gl	Galician @ Spain
+    16		  59	    83%    	hu      	hu	Hungarian
+    17		  59	    83%    	it      	it	Italian
+    18		  59	    83%    	ja      	ja	Japanese
+    19		  59	    83%    	nb      	nb	Bokmål, Norwegian; Norwegian Bokmål
+    20		  59	    83%    	ru      	ru	Russian
+    21		  59	    83%    	sl      	sl	Slovenian
+    22		  59	    83%    	tr      	tr	Turkish
+    23		  58	    81%    	ru_RU   	ru	Russian @ Russian Federation
+    24		  58	    81%    	zh_CN   	zh	Chinese @ China
+    25		  51	    71%    	nl_BE   	nl	Dutch; Flemish @ Belgium

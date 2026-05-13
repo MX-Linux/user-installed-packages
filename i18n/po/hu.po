@@ -8,16 +8,16 @@
 # b3a601cea954ec302ff861c4e4267715_658d0ac <5d11351aabbb363b7934638cd728c892_933757>, 2023
 # James Bowlin <BitJam@gmail.com>, 2023
 # Tamas Szarvas <szarvy@gmail.com>, 2023
-# Kempelen <antixhu@netengine.hu>, 2023
+# Kempelen <antixhu@netengine.hu>, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-27 20:37+0200\n"
+"POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: Kempelen <antixhu@netengine.hu>, 2023\n"
+"Last-Translator: Kempelen <antixhu@netengine.hu>, 2026\n"
 "Language-Team: Hungarian (https://app.transifex.com/anticapitalista/teams/10162/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +42,26 @@ msgstr "OK"
 #. installed by the user.
 msgid "Save List"
 msgstr "Lista mentése"
+
+msgid "Changelog"
+msgstr "Változások listája"
+
+msgid "License"
+msgstr "Licenc"
+
+msgid "MX User Installed Packages"
+msgstr "MX Felhasználó által telepített csomagok"
+
+msgid "About MX User Installed Packages"
+msgstr "Az MX Felhasználó által telepített csomagok névjegye"
+
+msgid "An app to list and re-install user installed packages."
+msgstr ""
+"Egy program a felhasználó által telepített csomagok listázásra és "
+"újratelepítésére."
+
+msgid "MX User Installed Packages Changelog"
+msgstr "Az MX Felhasználó által telepített csomagok változásainak listája"
 
 msgid "Date:"
 msgstr "Dátum:"
@@ -135,6 +155,12 @@ msgstr "Válassza ki, mely csomagokat szeretné telepíteni:"
 msgid "Install packages"
 msgstr "Csomagok telepítése"
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's
+#. list are available.
+msgid "Please wait, checking package availability ..."
+msgstr ""
+
 msgid "Missing Packages"
 msgstr "Hiányzó csomagok"
 
@@ -150,11 +176,87 @@ msgstr "[OK] Hiányzó csomagok listája mentve:"
 msgid "UIP list of missing packages could not be saved."
 msgstr "A hiányzó csomagok listájának mentése nem sikerült."
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr "Nyomja meg az Enter billentyűt a kilépéshez"
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
 msgstr "A kiválasztott csomagok telepítése, hitelesítse magát"
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package
+#. cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr "Beállítás most"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not
+#. translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr ""
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -249,31 +351,14 @@ msgstr ""
 msgid "apt;install;package;uip;"
 msgstr "apt;telepítés;csomag;uip;"
 
-msgid "MX User Installed Packages"
-msgstr "MX Felhasználó által telepített csomagok"
-
-msgid "About MX User Installed Packages"
-msgstr "Az MX Felhasználó által telepített csomagok névjegye"
-
-msgid "An app to list and re-install user installed packages."
-msgstr ""
-"Egy program a felhasználó által telepített csomagok listázásra és "
-"újratelepítésére."
-
-msgid "Changelog"
-msgstr "Változások listája"
-
-msgid "MX User Installed Packages Changelog"
-msgstr "Az MX Felhasználó által telepített csomagok változásainak listája"
-
-msgid "License"
-msgstr "Licenc"
-
-msgid "MX User Installed Packages License"
-msgstr "Az MX Felhasználó által telepített csomagok licence"
-
 msgid "Authentication is required to install selected packages"
 msgstr "A kiválasztott csomagok telepítéséhez hitelesítés szükséges"
 
 msgid "Install selected packages"
 msgstr "A kiválasztott csomagok telepítése"
+
+msgid "Authentication is required to update the package cache"
+msgstr ""
+
+msgid "Update package cache"
+msgstr ""

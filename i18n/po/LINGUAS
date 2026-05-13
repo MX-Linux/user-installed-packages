@@ -1,6 +1,6 @@
 # LINGUAS for user-installed-packages-mx
 # with minimum completion percent 30%
-# generated at Wed, 06 May 2026 12:27:11 -0500
+# generated at Tue, 12 May 2026 18:12:07 -0500
 #
 ca
 de
@@ -11,7 +11,6 @@ fi
 fr_BE
 fr
 gl_ES
-he_IL
 hu
 it
 ja

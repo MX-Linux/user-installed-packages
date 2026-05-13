@@ -41,41 +41,28 @@ xgettext --package-name=$PKGNAME --language=Desktop --join-existing \
           --keyword=Comment  --keyword=Keywords \
           --output=$POT "${POTFILES[@]}"
 
-
-BIN_DIR=../exec
-POTFILES=(
-        $BIN_DIR/uip-about.py
-        )
-xgettext --package-name=$PKGNAME --language Python --join-existing \
-          --msgid-bugs-address="$SENDBUGS" \
-          --no-location --no-wrap --add-comments=TRANSLATORS  \
-          --keyword=_  --output=$POT "${POTFILES[@]}"
-
-BIN_DIR=../exec
-POTFILES=(
-        $BIN_DIR/uip-about.py
-        )
-
-
 DATA_DIR=../data
+DATA_DIR=../data
+ITS=$DATA_DIR/its/polkit.its
+
 POTFILES=(
         $DATA_DIR/org.mxlinux.user-installed-packages.policy
         )
-ITS=/usr/share/gettext/its/polkit.its
 xgettext --package-name=$PKGNAME --its=$ITS --join-existing  \
           --msgid-bugs-address="$SENDBUGS" \
           --no-location --no-wrap --add-comments  \
           --output=$POT "${POTFILES[@]}"
 
-
 sed -i 's/charset=CHARSET/charset=UTF-8/' $POT
 
 if [ -f $POT~ ]; then
-    POT_CHANGE=$(diff ${POT} ${POT}~ | grep -vE '^([0-9]|-)|POT-Creation-Date:' | wc -l)
+    POT_CHANGE=$(diff -I "POT-Creation-Date:" ${POT} ${POT}~ | grep -vE '^([0-9]|-)' | wc -l)
     if (( POT_CHANGE == 0 )); then
        echo "No change in POT-file: $POT"
        echo "Keeping existing POT-file"
+       mv $POT $POT~~
        mv $POT~ $POT
+       mv $POT~~ $POT~
     else
        echo "New POT-file generated:  $POT"
        echo "Old POT-file: $POT~"
@@ -108,11 +95,13 @@ fi
 sed -i 's/charset=CHARSET/charset=UTF-8/' $POT
 
 if [ -f $POT~ ]; then
-    POT_CHANGE=$(diff $POT $POT~ | grep -vE '^([0-9]|-)|POT-Creation-Date:' | wc -l)
+    POT_CHANGE=$(diff -I "POT-Creation-Date:" $POT $POT~ | grep -vE '^([0-9]|-)' | wc -l)
     if (( POT_CHANGE == 0 )); then
        echo "No change in POT-file: $POT"
        echo "Keeping existing POT-file"
+       mv $POT $POT~~
        mv $POT~ $POT
+       mv $POT~~ $POT~
     else
        echo "New POT-file generated:  $POT"
        echo "Old POT-file: $POT~"

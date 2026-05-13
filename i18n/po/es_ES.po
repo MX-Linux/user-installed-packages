@@ -4,17 +4,17 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Casper, 2023
-# Manuel <senpai99@hotmail.com>, 2023
+# Casper, 2026
+# Manuel <senpai99@hotmail.com>, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-27 20:37+0200\n"
+"POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: Manuel <senpai99@hotmail.com>, 2023\n"
+"Last-Translator: Manuel <senpai99@hotmail.com>, 2026\n"
 "Language-Team: Spanish (Spain) (https://app.transifex.com/anticapitalista/teams/10162/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,6 +39,26 @@ msgstr "Aceptar"
 #. installed by the user.
 msgid "Save List"
 msgstr "Guardar lista"
+
+msgid "Changelog"
+msgstr "Cambios de Registro"
+
+msgid "License"
+msgstr "Licencia"
+
+msgid "MX User Installed Packages"
+msgstr "MX Paquetes instalados por el usuario"
+
+msgid "About MX User Installed Packages"
+msgstr "Acerca de MX Paquetes instalados por el usuario"
+
+msgid "An app to list and re-install user installed packages."
+msgstr ""
+"Una aplicación para listar y reinstalar los paquetes instalados por el "
+"usuario."
+
+msgid "MX User Installed Packages Changelog"
+msgstr "MX Registro de cambios de paquetes instalados por el usuario"
 
 msgid "Date:"
 msgstr "Fecha:"
@@ -132,6 +152,12 @@ msgstr "Seleccione los paquetes que desea instalar:"
 msgid "Install packages"
 msgstr "Instalar paquetes"
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's
+#. list are available.
+msgid "Please wait, checking package availability ..."
+msgstr "Por favor, espere, comprobando la disponibilidad del paquete..."
+
 msgid "Missing Packages"
 msgstr "Paquetes faltantes"
 
@@ -147,11 +173,88 @@ msgstr "[OK] Lista UIP de paquetes faltantes guardada:"
 msgid "UIP list of missing packages could not be saved."
 msgstr "No se pudo guardar la lista UIP de paquetes faltantes."
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr "Pulse Enter para salir"
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
 msgstr "Instalando paquetes seleccionados, por favor autentifiquese"
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package
+#. cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr "Aviso sobre la caché de paquetes"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr "Actualizar Ahora"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr "Continuar de todos modos"
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not
+#. translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr "¿Ejecutar APT_UPDATE ahora para actualizar la caché de paquetes?"
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr "La caché de paquetes está vacía."
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] "La caché de paquetes lleva %d día sin actualizarse."
+msgstr[1] "La caché de paquetes lleva %d días sin actualizarse."
+msgstr[2] "La caché de paquetes lleva %d días sin actualizarse."
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr "Es posible que la caché de paquetes esté desactualizada."
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr "Actualización de la caché de paquetes; por favor, autentifiquese"
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
+msgstr "Pulse Enter para continuar"
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -246,31 +349,14 @@ msgstr ""
 msgid "apt;install;package;uip;"
 msgstr "apt;instalar;paquete;uip;"
 
-msgid "MX User Installed Packages"
-msgstr "MX Paquetes instalados por el usuario"
-
-msgid "About MX User Installed Packages"
-msgstr "Acerca de MX Paquetes instalados por el usuario"
-
-msgid "An app to list and re-install user installed packages."
-msgstr ""
-"Una aplicación para listar y reinstalar los paquetes instalados por el "
-"usuario."
-
-msgid "Changelog"
-msgstr "Cambios de Registro"
-
-msgid "MX User Installed Packages Changelog"
-msgstr "MX Registro de cambios de paquetes instalados por el usuario"
-
-msgid "License"
-msgstr "Licencia"
-
-msgid "MX User Installed Packages License"
-msgstr "Licencia de MX Paquetes instalados por el usuario"
-
 msgid "Authentication is required to install selected packages"
 msgstr "Se necesita autenticación para instalar los paquetes seleccionados"
 
 msgid "Install selected packages"
 msgstr "Instalar los paquetes seleccionados"
+
+msgid "Authentication is required to update the package cache"
+msgstr ""
+
+msgid "Update package cache"
+msgstr ""

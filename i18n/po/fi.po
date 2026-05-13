@@ -9,15 +9,16 @@
 # En Kerro <inactive+ekeimaja@transifex.com>, 2023
 # Risto Pärkkä, 2023
 # Kimmo Kujansuu <mrkujansuu@gmail.com>, 2025
+# Oi Suomi On! <oisuomion@protonmail.com>, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-27 20:37+0200\n"
+"POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: Kimmo Kujansuu <mrkujansuu@gmail.com>, 2025\n"
+"Last-Translator: Oi Suomi On! <oisuomion@protonmail.com>, 2026\n"
 "Language-Team: Finnish (https://app.transifex.com/anticapitalista/teams/10162/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +43,24 @@ msgstr "OK"
 #. installed by the user.
 msgid "Save List"
 msgstr "Tallenna lista"
+
+msgid "Changelog"
+msgstr "Muutosloki"
+
+msgid "License"
+msgstr "Lisenssi"
+
+msgid "MX User Installed Packages"
+msgstr "MX Käyttäjän asentamat Paketit"
+
+msgid "About MX User Installed Packages"
+msgstr "Tietoja MX Käyttäjän asennukset"
+
+msgid "An app to list and re-install user installed packages."
+msgstr "Sovellus listaa käyttäjän asentamat paketit ja asentaa uudelleen."
+
+msgid "MX User Installed Packages Changelog"
+msgstr "MX Käyttäjän asentamien pakettien muutosluettelo"
 
 msgid "Date:"
 msgstr "Päivämäärä:"
@@ -135,6 +154,12 @@ msgstr "Valitse mitkä paketit haluat asentaa:"
 msgid "Install packages"
 msgstr "Asenna paketit"
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's
+#. list are available.
+msgid "Please wait, checking package availability ..."
+msgstr ""
+
 msgid "Missing Packages"
 msgstr "Puuttuvat Paketit"
 
@@ -150,11 +175,87 @@ msgstr "[OK] UIP-luettelo puuttuvista paketeista tallennettu:"
 msgid "UIP list of missing packages could not be saved."
 msgstr "Puuttuvien pakettien UIP-luetteloa ei voitu tallentaa."
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr "Paina Enter poistuaksesi"
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
 msgstr "Asentaaksesi valittuja paketteja, ole hyvä ja todenna"
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package
+#. cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr "Päivitä heti"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not
+#. translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr ""
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -249,29 +350,14 @@ msgstr ""
 msgid "apt;install;package;uip;"
 msgstr "apt;install;package;uip;"
 
-msgid "MX User Installed Packages"
-msgstr "MX Käyttäjän asentamat Paketit"
-
-msgid "About MX User Installed Packages"
-msgstr "Tietoja MX Käyttäjän asennukset"
-
-msgid "An app to list and re-install user installed packages."
-msgstr "Sovellus listaa käyttäjän asentamat paketit ja asentaa uudelleen."
-
-msgid "Changelog"
-msgstr "Muutosloki"
-
-msgid "MX User Installed Packages Changelog"
-msgstr "MX Käyttäjän asentamien pakettien muutosluettelo"
-
-msgid "License"
-msgstr "Lisenssi"
-
-msgid "MX User Installed Packages License"
-msgstr "MX Käyttäjän asennukset lisenssi"
-
 msgid "Authentication is required to install selected packages"
 msgstr "Todennus vaaditaan valittujen pakettien asentamiseen"
 
 msgid "Install selected packages"
 msgstr "Asenna valitut paketit"
+
+msgid "Authentication is required to update the package cache"
+msgstr ""
+
+msgid "Update package cache"
+msgstr ""
