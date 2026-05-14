@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-27 20:37+0200\n"
+"POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
 "Last-Translator: Xie Yanbo <xieyanbo@gmail.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/anticapitalista/teams/10162/zh_CN/)\n"
@@ -42,6 +42,24 @@ msgstr "确定"
 #. installed by the user.
 msgid "Save List"
 msgstr "保存列表"
+
+msgid "Changelog"
+msgstr "变更日志"
+
+msgid "License"
+msgstr "许可证"
+
+msgid "MX User Installed Packages"
+msgstr "MX 用户已安装软件包"
+
+msgid "About MX User Installed Packages"
+msgstr "关于 MX 用户已安装软件包"
+
+msgid "An app to list and re-install user installed packages."
+msgstr "一个列出和重新安装用户安装过的软件包的应用程序。"
+
+msgid "MX User Installed Packages Changelog"
+msgstr "MX 用户已安装软件包的变更日志"
 
 msgid "Date:"
 msgstr "日期："
@@ -128,6 +146,12 @@ msgstr "选择您想要安装的软件包："
 msgid "Install packages"
 msgstr "安装软件包"
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's
+#. list are available.
+msgid "Please wait, checking package availability ..."
+msgstr ""
+
 msgid "Missing Packages"
 msgstr "缺少的软件包"
 
@@ -143,11 +167,86 @@ msgstr "[OK] 用户已安装软件包的缺失软件包列表已保存。"
 msgid "UIP list of missing packages could not be saved."
 msgstr "用户已安装软件包列表中的缺失包列表无法保存。"
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr "按回车键（Enter）键退出"
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
 msgstr "安装选中的软件包，请进行身份验证"
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package
+#. cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not
+#. translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr ""
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -240,29 +339,14 @@ msgstr "列出用户已安装的软件包。从现有列表中安装软件包。
 msgid "apt;install;package;uip;"
 msgstr "apt;install;package;uip;安装;软件包;用户已安装软件包;"
 
-msgid "MX User Installed Packages"
-msgstr "MX 用户已安装软件包"
-
-msgid "About MX User Installed Packages"
-msgstr "关于 MX 用户已安装软件包"
-
-msgid "An app to list and re-install user installed packages."
-msgstr "一个列出和重新安装用户安装过的软件包的应用程序。"
-
-msgid "Changelog"
-msgstr "变更日志"
-
-msgid "MX User Installed Packages Changelog"
-msgstr "MX 用户已安装软件包的变更日志"
-
-msgid "License"
-msgstr "许可证"
-
-msgid "MX User Installed Packages License"
-msgstr "MX 用户已安装软件包许可证"
-
 msgid "Authentication is required to install selected packages"
 msgstr "需要进行身份验证才能安装所选软件包"
 
 msgid "Install selected packages"
 msgstr "安装选中的软件包"
+
+msgid "Authentication is required to update the package cache"
+msgstr ""
+
+msgid "Update package cache"
+msgstr ""

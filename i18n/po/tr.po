@@ -8,15 +8,16 @@
 # Caner Başaran <basaran.caner@gmail.com>, 2023
 # Mehmet Akif Dokuzoğlu, 2023
 # mahmut özcan <mahmutozcan@protonmail.com>, 2025
+# e0360fc3c0afcd70e5aed1cfc885bac6, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2023-03-27 20:37+0200\n"
+"POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: mahmut özcan <mahmutozcan@protonmail.com>, 2025\n"
+"Last-Translator: e0360fc3c0afcd70e5aed1cfc885bac6, 2026\n"
 "Language-Team: Turkish (https://app.transifex.com/anticapitalista/teams/10162/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,6 +42,26 @@ msgstr "Tamam"
 #. installed by the user.
 msgid "Save List"
 msgstr "Listeyi Kaydet"
+
+msgid "Changelog"
+msgstr "Değişim günlüğü"
+
+msgid "License"
+msgstr "Lisans"
+
+msgid "MX User Installed Packages"
+msgstr "MX Kullanıcının Yüklediği Paketler"
+
+msgid "About MX User Installed Packages"
+msgstr "MX Kullanıcının Yüklediği Paketler Hakkında"
+
+msgid "An app to list and re-install user installed packages."
+msgstr ""
+"Kullanıcının yüklediği paketleri listelemek ve yeniden yüklemek için bir "
+"uygulama."
+
+msgid "MX User Installed Packages Changelog"
+msgstr "MX Kullanıcının Yüklediği Paketler Değişiklik Günlüğü"
 
 msgid "Date:"
 msgstr "Tarih:"
@@ -132,6 +153,12 @@ msgstr "Yüklemek istediğiniz paketleri seçin:"
 msgid "Install packages"
 msgstr "Paketleri yükleyin"
 
+#. TRANSLATORS:
+#. Shown in a progress dialog while checking which packages from the user's
+#. list are available.
+msgid "Please wait, checking package availability ..."
+msgstr ""
+
 msgid "Missing Packages"
 msgstr "Eksik Paketler"
 
@@ -147,11 +174,87 @@ msgstr "[Tamam] Eksik paketlerin KYP listesi kaydedildi:"
 msgid "UIP list of missing packages could not be saved."
 msgstr "Eksik paketlerin KYP listesi kaydedilemedi."
 
+#. TRANSLATORS:
+#. Shown in a terminal window after package installation finishes.
+#. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
 msgstr "Çıkmak için Enter’a basın"
 
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to install packages.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Installing selected packages, please authenticate"
 msgstr "Seçilen paketler yükleniyor, lütfen kimlik doğrulaması yapın"
+
+#. TRANSLATORS:
+#. Title of a warning dialog shown when the local package database (package
+#. cache) is empty or outdated.
+#. The package cache is refreshed by running 'apt update'.
+msgid "Package Cache Warning"
+msgstr ""
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Runs 'apt update' to refresh the local package database.
+msgid "Update Now"
+msgstr "Şimdi Güncelle"
+
+#. TRANSLATORS:
+#. Button in the Package Cache Warning dialog.
+#. Skips the package database update and proceeds with installation.
+msgid "Continue Anyway"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. APT_UPDATE is a placeholder for the command "apt update" -- do not
+#. translate or change it.
+msgid "Run APT_UPDATE now to refresh the package cache?"
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache may be outdated."
+msgstr ""
+
+#. TRANSLATORS:
+#. Header shown in a terminal window that opens to run 'apt update'.
+#. 'authenticate' means the user must enter their password (sudo/pkexec).
+msgid "Updating package cache, please authenticate"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown in a terminal window after 'apt update' finishes.
+#. The user presses Enter to close the terminal and return to the app.
+msgid "Press Enter to continue"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -246,31 +349,14 @@ msgstr ""
 msgid "apt;install;package;uip;"
 msgstr "apt;yükle;paket;kyp;"
 
-msgid "MX User Installed Packages"
-msgstr "MX Kullanıcının Yüklediği Paketler"
-
-msgid "About MX User Installed Packages"
-msgstr "MX Kullanıcının Yüklediği Paketler Hakkında"
-
-msgid "An app to list and re-install user installed packages."
-msgstr ""
-"Kullanıcının yüklediği paketleri listelemek ve yeniden yüklemek için bir "
-"uygulama."
-
-msgid "Changelog"
-msgstr "Değişim günlüğü"
-
-msgid "MX User Installed Packages Changelog"
-msgstr "MX Kullanıcının Yüklediği Paketler Değişiklik Günlüğü"
-
-msgid "License"
-msgstr "Lisans"
-
-msgid "MX User Installed Packages License"
-msgstr "MX Kullanıcının Yüklediği Paketler Lisansı"
-
 msgid "Authentication is required to install selected packages"
 msgstr "Seçili paketleri yüklemekiçin kimlik doğrulaması gerekiyor"
 
 msgid "Install selected packages"
 msgstr "Seçili paketleri yükle"
+
+msgid "Authentication is required to update the package cache"
+msgstr ""
+
+msgid "Update package cache"
+msgstr ""

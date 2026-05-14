@@ -1,3 +1,18 @@
+user-installed-packages (26.05.1) mx; urgency=medium
+
+  * Check package cache before building the install list
+    - warn and offer apt update if package cache is empty or outdated
+    - show error dialog when apt update fails, with option to continue anyway
+    - use own update stamp as fallback on systems without apt periodic stamp hook
+    - add please-wait progress dialog during package availability checks
+  * Remove redundant apt update from uip-apt-install (now handled by cache check)
+  * Remove dependency of python3-pyqt6 and xdotool
+  * Use yad to display "About" window
+  * Add --version flag
+  * Translations refresh
+
+ -- fehlix <fehlix@mxlinux.org>  Wed, 13 May 2026 12:08:18 -0400
+
 user-installed-packages (25.11.01) mx; urgency=medium
 
   * Adjust polkit agent detection pattern

@@ -8,16 +8,28 @@
  <policyconfig>
   <vendor>MX Linux</vendor>
   <vendor_url>https://mxlinux.org</vendor_url>
-  <action id="org.mxlinux.user-installed-packages">
-    <message >Authentication is required to install selected packages</message>
-    <description >Install selected packages</description>
+  <action id="org.mxlinux.user-installed-packages.install-selected-packages">
+    <message>Authentication is required to install selected packages</message>
+    <description>Install selected packages</description>
     <icon_name>user-installed-packages</icon_name>
     <defaults>
-      <allow_any>no</allow_any>
-      <allow_inactive>no</allow_inactive>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
       <allow_active>auth_admin</allow_active>
     </defaults>
     <annotate key="org.freedesktop.policykit.exec.path">/usr/libexec/user-installed-packages/uip-apt-install</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+  <action id="org.mxlinux.user-installed-packages.update-package-cache">
+    <message>Authentication is required to update the package cache</message>
+    <description>Update package cache</description>
+    <icon_name>user-installed-packages</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/libexec/user-installed-packages/uip-apt-update</annotate>
     <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
   </action>
 </policyconfig>

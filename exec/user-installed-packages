@@ -26,6 +26,20 @@ export BTN_SAVE=$(gettext 'Save List') ; BTN_SAVE+='!document-save'
 export UIP_ICON="user-installed-packages"
 [ -e "$UIP_ICON" ] && UIP_ICON=/usr/share/pixmaps/${UIP_ICON}.svg
 export UIP_CLASS="user-installed-packages"
+export UIP_SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+export BTN_CHANGELOG=$(gettext "Changelog") ; BTN_CHANGELOG+='!view-history'
+export BTN_LICENSE=$(gettext "License")     ; BTN_LICENSE+='!license'
+export UIP_ABOUT=$(gettext "MX User Installed Packages")
+export UIP_ABOUT_TITLE=$(gettext "About MX User Installed Packages")
+export UIP_ABOUT_TEXT=$(gettext "An app to list and re-install user installed packages.")
+export UIP_CHANGELOG_TITLE=$(gettext "MX User Installed Packages Changelog")
+export UIP_VERSION="@VERSION@"
+export UIP_URL="https://mxlinux.org"
+
+case "${1:-}" in
+    --version|-V) echo "$UIP_VERSION"; exit 0 ;;
+esac
 
 export INSTALLED_PACKAGES="/usr/share/antiX/installed-packages.txt"
 if [ ! -f $INSTALLED_PACKAGES ]; then
@@ -120,21 +134,71 @@ main() {
 
 }
 
-#function uip_about
-
-uip_about() {
-    # ugly hack: run uip-about.py as symlink in order to display icon in dock-like taskbar
-    local uip_about=/usr/libexec/user-installed-packages/uip-about.py
-    local uip_link=/usr/libexec/user-installed-packages/user-installed-packages
-    local real_path=$(realpath "$uip_about" 2>/dev/null)
-
-    if [ -L "$uip_link" ] && [ x"$real_path" == x"$(realpath "$uip_link" 2>/dev/null)" ]; then
-       uip_about="$uip_link"
-    fi
-    python3 "$uip_about"
+show_about() {
+    local text YAD_ABOUT
+    text="<b><big>${UIP_ABOUT}</big></b>\n"
+    text+="\nVersion: ${UIP_VERSION}\n"
+    text+="\n<b>${UIP_ABOUT_TEXT}</b>\n"
+    text+="\n<a href=\"${UIP_URL}\">${UIP_URL}</a>\n"
+    text+="\nCopyright $(printf '\xc2\xa9') MX Linux\n"
+    YAD_ABOUT=(yad
+        --title="$UIP_ABOUT_TITLE"
+        --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+        --image="$UIP_ICON" --image-on-top
+        --borders=20 --center --width=420
+        --text="$text" --text-align=center
+        --button="${BTN_CHANGELOG}:2"
+        --button="${BTN_LICENSE}:3"
+        --button="${BTN_CLOSE}:1"
+        )
+    "${YAD_ABOUT[@]}"
+    case $? in
+        2) show_changelog ;;
+        3) show_license   ;;
+    esac
 }
 
-export -f uip_about
+show_changelog() {
+    local width height YAD_CHANGELOG
+    local W H
+    width=$(( ${W:-1800} * 4 / 10 ))
+    height=$(( ${H:-1080} * 2 / 3 ))
+    local ORIGIN="MX repository"
+    local URI="https://mxrepo.com/mx/repo/pool/@CHANGEPATH@.changelog"
+    local changelog="/usr/share/doc/user-installed-packages/changelog.gz"
+    YAD_CHANGELOG=(yad
+        --title="$UIP_CHANGELOG_TITLE"
+        --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+        --width="$width" --height="$height"
+        --center --margins=7 --borders=5
+        --button="${BTN_CLOSE}:1"
+        --text-info
+        )
+    if [ -s "$changelog" ]; then
+        zcat "$changelog" 2>&1 | "${YAD_CHANGELOG[@]}"
+    else
+        PAGER=cat apt-get -qq \
+            -o "Acquire::Changelogs::URI::Origin::${ORIGIN}=${URI}" \
+            changelog user-installed-packages 2>&1 | "${YAD_CHANGELOG[@]}"
+    fi
+    show_about
+}
+
+show_license() {
+    local viewer
+    for v in mx-viewer antix-viewer sensible-browser x-www-browser xdg-open; do
+        viewer=$(command -v "$v" 2>/dev/null) && break
+    done
+    [ -n "$viewer" ] && "$viewer" "/usr/share/user-installed-packages/license.html" 2>/dev/null &
+    show_about
+}
+
+uip_about() {
+    exec 9>/tmp/${UIP_CLASS}-about-${UID}.lock
+    flock -n 9 || return
+    show_about
+}
+export -f uip_about show_about show_changelog show_license
 
 
 #function uip_help
@@ -302,7 +366,17 @@ Read_UIP_Load
     RET=$?
     (( RET != 0 )) && exit
     (( "${#UIP_LOADED_INSTALL[@]}" == 0 )) && exit
+
+    uip_check_apt_cache || exit
+
     #echo "#-------------------------";  declare -p UIP_LOADED_INSTALL
+
+    local TITLE_WAIT TEXT_WAIT
+    TITLE_WAIT=$(gettext 'Install packages')
+    # TRANSLATORS:
+    # Shown in a progress dialog while checking which packages from the user's list are available.
+    TEXT_WAIT=$(gettext 'Please wait, checking package availability ...')
+    uip_wait_start "$TITLE_WAIT" "$TEXT_WAIT"
 
     UIP_INSTALL_AVAILABLE=($(apt-cache -q madison "${UIP_LOADED_INSTALL[@]}" |
                              grep Packages    |
@@ -369,6 +443,8 @@ NotUsed
 
     #echo "#-------------------------";  declare -p UIP_INSTALLABLE
     #echo "UIP_NOT_INSTALLABLE[@] = ${UIP_NOT_INSTALLABLE[*]}"
+
+    uip_wait_stop
 
     if (( ${#UIP_NOT_AVAILABLE[@]} >= 1 )) || (( ${#UIP_NOT_INSTALLABLE[@]} >= 1 )); then
 
@@ -447,21 +523,26 @@ NotUsed
         fi
     fi
 
-    HOLDMESSAGE=$(gettext 'Press Enter to exit')
+    # TRANSLATORS:
+    # Shown in a terminal window after package installation finishes.
+    # The user presses Enter to close the terminal.
+    HOLDMESSAGE=$(gettext "Press Enter to exit")
+    # TRANSLATORS:
+    # Header shown in a terminal window that opens to install packages.
+    # 'authenticate' means the user must enter their password (sudo/pkexec).
     INSTALL_MESSAGE=$(gettext "Installing selected packages, please authenticate")
-    # remove bad chars: dollar sign and back-quote etc
+    local AQ DQ RSQ RDQ
+    AQ=$(printf \\x27)             # ASCII single quote
+    DQ=$(printf \\x22)             # ASCII double quote
+    RSQ=$(printf \\xe2\\x80\\x99)  # right single curly quote U+2019
+    RDQ=$(printf \\xe2\\x80\\x9d)  # right double curly quote U+201D
     HOLDMESSAGE=${HOLDMESSAGE//[\$\`\|\>\<\&]/}
-    # replace single and double quotes with safe quote chars
-    HOLDMESSAGE=${HOLDMESSAGE//\'/’}
-    HOLDMESSAGE=${HOLDMESSAGE//\"/”}
-    # replcae semicolon with comma
+    HOLDMESSAGE=${HOLDMESSAGE//${AQ}/$RSQ}
+    HOLDMESSAGE=${HOLDMESSAGE//${DQ}/$RDQ}
     HOLDMESSAGE=${HOLDMESSAGE//;/,}
-    # remove bad chars: dollar sign and back-quote etc
     INSTALL_MESSAGE=${INSTALL_MESSAGE//[\$\`\|\>\<\&]/}
-    # replace single and double quotes with safe quote chars
-    INSTALL_MESSAGE=${INSTALL_MESSAGE//\'/’}
-    INSTALL_MESSAGE=${INSTALL_MESSAGE//\"/”}
-    # replace semicolon with comma
+    INSTALL_MESSAGE=${INSTALL_MESSAGE//${AQ}/$RSQ}
+    INSTALL_MESSAGE=${INSTALL_MESSAGE//${DQ}/$RDQ}
     INSTALL_MESSAGE=${INSTALL_MESSAGE//;/,}
 
     CMD="echo ${INSTALL_MESSAGE}; "
@@ -477,8 +558,10 @@ NotUsed
         CMD+="sudo -k; sudo -v && sudo LANGUAGE=$LANGUAGE apt install --ignore-missing "
     fi
     HLD="echo; echo $HOLDMESSAGE; read x"
+
+
     #Install packages in separate terminal
-    TERMINAL_BASENAME=$(basename -s .wrapper  $(realpath $(which x-terminal-emulator)))
+    TERMINAL_BASENAME=$(basename -s .wrapper  $(realpath $(command -v x-terminal-emulator)))
     case "$TERMINAL_BASENAME"  in
         xfce4-terminal)
             xfce4-terminal --disable-server -x bash -c "$CMD ${UIP_INSTALLABLE[*]}; $HLD"
@@ -489,6 +572,267 @@ NotUsed
     esac
 }
 export -f uip_load
+
+
+uip_check_apt_cache() {
+    local cache_empty=false
+    local cache_stale=false
+
+    local stale_days=0
+
+    case "${UIP_DEBUG_APT_CACHE,,}" in
+        empty)       cache_empty=true ;;
+        stale-month) cache_stale=true; stale_days=30 ;;
+        stale-day)   cache_stale=true; stale_days=1  ;;
+        stale)       cache_stale=true; stale_days=2  ;;
+        *)
+            local cache_count
+            cache_count=$(apt-cache dumpavail 2>/dev/null | wc -l)
+
+            if (( cache_count == 0 )); then
+                cache_empty=true
+            else
+                # stamp file is authoritative if present; pkgcache.bin is fallback only
+                local now=0 last_update=0 t
+                now=$(date +%s)
+                if [ -f /var/lib/apt/periodic/update-stamp ]; then
+                    t=$(stat -c %Y /var/lib/apt/periodic/update-stamp 2>/dev/null)
+                    last_update=${t:-0}
+                elif [ -f /var/cache/apt/pkgcache.bin ]; then
+                    t=$(stat -c %Y /var/cache/apt/pkgcache.bin 2>/dev/null)
+                    last_update=${t:-0}
+                fi
+
+
+                if (( last_update == 0 || now - last_update > 86400 )); then
+                    cache_stale=true
+                    stale_days=$(( (now - last_update) / 86400 ))
+                    (( stale_days < 1 )) && stale_days=1
+                fi
+            fi
+            ;;
+    esac
+
+    # cache is fresh and non-empty -- nothing to warn about
+    $cache_empty || $cache_stale || return 0
+
+    local TITLE_WARN TEXT_WARN BTN_UPDATE BTN_CONTINUE
+    # TRANSLATORS:
+    # Title of a warning dialog shown when the local package database (package cache) is empty or outdated.
+    # The package cache is refreshed by running 'apt update'.
+    TITLE_WARN=$(gettext 'Package Cache Warning')
+    # TRANSLATORS:
+    # Button in the Package Cache Warning dialog.
+    # Runs 'apt update' to refresh the local package database.
+    BTN_UPDATE=$(gettext 'Update Now')        ; BTN_UPDATE+='!system-software-update'
+    # TRANSLATORS:
+    # Button in the Package Cache Warning dialog.
+    # Skips the package database update and proceeds with installation.
+    BTN_CONTINUE=$(gettext 'Continue Anyway') ; BTN_CONTINUE+='!dialog-warning'
+
+    local run_update_msg
+    # TRANSLATORS:
+    # The package cache is the local database of available software packages, refreshed by 'apt update'.
+    # APT_UPDATE is a placeholder for the command "apt update" -- do not translate or change it.
+    run_update_msg=$(gettext 'Run APT_UPDATE now to refresh the package cache?')
+    run_update_msg="${run_update_msg//APT_UPDATE/<b>apt update</b>}"
+    run_update_msg+="\n"
+
+    if $cache_empty; then
+        # TRANSLATORS:
+        # The package cache is the local database of available software packages, refreshed by 'apt update'.
+        TEXT_WARN=$(gettext 'The package cache is empty.')
+        TEXT_WARN+="\n\n${run_update_msg}"
+    else
+        local days_msg
+        # TRANSLATORS:
+        # The package cache is the local database of available software packages, refreshed by 'apt update'.
+        # There may be more than one sentence that needs to be translated.
+        # If so, click the tabs with "1" ... "other" to translate them.
+        # Do keep the count placeholder "%d" -- it will be replaced by the number of days.
+        days_msg=$(ngettext \
+            'The package cache has not been refreshed for %d day.' \
+            'The package cache has not been refreshed for %d days.' \
+            "$stale_days")
+        days_msg="${days_msg/\%?/$stale_days}"
+        # TRANSLATORS:
+        # The package cache is the local database of available software packages, refreshed by 'apt update'.
+        TEXT_WARN=$(gettext 'The package cache may be outdated.')
+        TEXT_WARN+="\n\n${days_msg}"
+        TEXT_WARN+="\n\n${run_update_msg}"
+    fi
+
+    local YAD ret
+    YAD=(yad
+        --title="$TITLE_WARN" --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+        --borders=20 --center --width=520
+        --image=dialog-warning
+        --text="$TEXT_WARN" --text-align=left
+        --button="${BTN_UPDATE}:3"
+        --button="${BTN_CONTINUE}:0"
+        --button="${BTN_CLOSE}:1"
+        )
+    "${YAD[@]}"
+    ret=$?
+
+    if (( ret == 3 )); then
+        local update_cmd update_msg hold_msg polkit_pattern TERMINAL_BASENAME
+        polkit_pattern='polkit-(gnome|kde|mate)-authentication-agent|lxqt-policykit-agent'
+        # TRANSLATORS:
+        # Header shown in a terminal window that opens to run 'apt update'.
+        # 'authenticate' means the user must enter their password (sudo/pkexec).
+        update_msg=$(gettext 'Updating package cache, please authenticate')
+        # TRANSLATORS:
+        # Shown in a terminal window after 'apt update' finishes.
+        # The user presses Enter to close the terminal and return to the app.
+        hold_msg=$(gettext 'Press Enter to continue')
+        local RSQ=$'\xe2\x80\x99' RDQ=$'\xe2\x80\x9d'
+        update_msg=${update_msg//[\$\`\|\>\<\&]/}
+        update_msg=${update_msg//\'/$RSQ}
+        update_msg=${update_msg//\"/$RDQ}
+        update_msg=${update_msg//;/,}
+        hold_msg=${hold_msg//[\$\`\|\>\<\&]/}
+        hold_msg=${hold_msg//\'/$RSQ}
+        hold_msg=${hold_msg//\"/$RDQ}
+        hold_msg=${hold_msg//;/,}
+
+        local uip_apt_update="/usr/libexec/user-installed-packages/uip-apt-update"
+        if [ -x /usr/bin/pkexec ] && pgrep -u "$(id -u)" -f "$polkit_pattern" >/dev/null; then
+            if [ -x "${uip_apt_update}" ]; then
+                update_cmd="/usr/bin/pkexec ${uip_apt_update}"
+            else
+                update_cmd="/usr/bin/pkexec apt update"
+            fi
+        else
+            if [ -x "${uip_apt_update}" ]; then
+                update_cmd="sudo -k; sudo -v && sudo ${uip_apt_update}"
+            else
+                update_cmd="sudo -k; sudo -v && sudo apt update"
+            fi
+        fi
+
+        local apt_has_stamp_hook=false uip_update_stamp
+        apt-config dump "APT::Update::Post-Invoke-Success" 2>/dev/null \
+            | grep -qE "touch\s+/var/lib/apt/periodic/update-stamp" \
+            && apt_has_stamp_hook=true
+        uip_update_stamp="/tmp/uip-$(logname)-update-stamp"
+
+        local before_update
+        before_update=$(date +%s)
+        TERMINAL_BASENAME=$(basename -s .wrapper "$(realpath "$(command -v x-terminal-emulator)")")
+        case "$TERMINAL_BASENAME" in
+            xfce4-terminal)
+                xfce4-terminal --disable-server -x bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
+                ;;
+            *)
+                x-terminal-emulator -e bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
+                ;;
+        esac
+
+        local update_ok=false t
+        if $apt_has_stamp_hook; then
+            [ -f /var/lib/apt/periodic/update-stamp ] &&
+                t=$(stat -c %Y /var/lib/apt/periodic/update-stamp 2>/dev/null) &&
+                (( t > before_update )) && update_ok=true
+        else
+            [ -f "$uip_update_stamp" ] &&
+                t=$(stat -c %Y "$uip_update_stamp" 2>/dev/null) &&
+                (( t > before_update )) && update_ok=true
+            rm -f "$uip_update_stamp" 2>/dev/null
+        fi
+
+        if ! $update_ok; then
+            local fail_msg
+            # TRANSLATORS:
+            # Shown after 'apt update' fails (e.g. no internet connection).
+            fail_msg=$(gettext 'Package cache update failed. Check your internet connection or APT sources lists.')
+            local YAD_FAIL
+            YAD_FAIL=(yad
+                --title="$TITLE_WARN" --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+                --borders=20 --center --width=520
+                --image=dialog-error
+                --text="$fail_msg" --text-align=left
+                --button="${BTN_CONTINUE}:0"
+                --button="${BTN_CLOSE}:1"
+                )
+            "${YAD_FAIL[@]}"
+            (( $? == 0 )) && return 0 || return 1
+        fi
+        return 0
+    fi
+
+    (( ret == 0 )) && return 0
+    return 1
+}
+export -f uip_check_apt_cache
+
+
+uip_wait_start() {
+    local title="$1" msg="$2"
+    _UIP_WAIT_PID=
+    _UIP_WAIT_FD=
+    _UIP_WAIT_FEED_PID=
+
+    local YAD_WAIT
+    YAD_WAIT=(yad
+        --title="$title" --class="$UIP_CLASS" --window-icon="$UIP_ICON"
+        --borders=20 --center --width=400
+        --no-buttons
+        --text="$msg"
+        )
+
+    case "${UIP_DEBUG_WAIT,,}" in
+        info)
+            "${YAD_WAIT[@]}" --info --image=system-run &
+            _UIP_WAIT_PID=$!
+            ;;
+        pulse|percent|*)
+            local _fifo
+            _fifo=$(mktemp -u --suffix=.uip)
+            mkfifo "$_fifo"
+            local _pulsate_flag=
+            [ "${UIP_DEBUG_WAIT,,}" = pulse ] && _pulsate_flag=--pulsate
+            "${YAD_WAIT[@]}" --progress $_pulsate_flag --auto-close < "$_fifo" &
+            _UIP_WAIT_PID=$!
+            exec {_UIP_WAIT_FD}>"$_fifo"
+            rm -f "$_fifo"
+            # bouncing pinger: keeps progress animated on older yad where
+            # --pulsate does not self-animate without input
+            { local i=10 d=10
+              while true; do
+                  printf '%d\n' $i
+                  i=$(( i + d ))
+                  (( i >= 100 )) && d=-10 && i=90
+                  (( i <=   0 )) && d=10  && i=10
+                  sleep 0.1
+              done
+            } >&${_UIP_WAIT_FD} &
+            _UIP_WAIT_FEED_PID=$!
+            ;;
+    esac
+}
+export -f uip_wait_start
+export _UIP_WAIT_PID _UIP_WAIT_FD _UIP_WAIT_FEED_PID
+
+
+uip_wait_stop() {
+    if [ -n "$_UIP_WAIT_FEED_PID" ]; then
+        kill "$_UIP_WAIT_FEED_PID" 2>/dev/null
+        wait "$_UIP_WAIT_FEED_PID" 2>/dev/null
+        _UIP_WAIT_FEED_PID=
+    fi
+    if [ -n "$_UIP_WAIT_FD" ]; then
+        exec {_UIP_WAIT_FD}>&-
+        _UIP_WAIT_FD=
+    fi
+    if [ -n "$_UIP_WAIT_PID" ]; then
+        kill "$_UIP_WAIT_PID" 2>/dev/null
+        wait "$_UIP_WAIT_PID" 2>/dev/null
+        _UIP_WAIT_PID=
+    fi
+}
+export -f uip_wait_stop
+
 
 uip_select_save_file() {
     # parameter

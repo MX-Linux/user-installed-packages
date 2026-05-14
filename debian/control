@@ -17,12 +17,10 @@ Architecture: all
 Depends: 
  apt,
  file,
+ gettext-base,
  libnotify-bin,
- python3-pyqt6,
- xdotool,
  yad,
  ${misc:Depends}
 Description: list user installed packages
- Generate list of user installed pakcages.  
+ Generate list of user installed packages.  
  Install packages from previously generated list.
-  
