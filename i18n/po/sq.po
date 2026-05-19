@@ -252,6 +252,8 @@ msgid ""
 "Package cache update failed. Check your internet connection or APT sources "
 "lists."
 msgstr ""
+"Përditësimi i fshehtinës së paketave dështoi. Kontrolloni lidhjen tuaj në "
+"internet, ose lista burimesh APTs."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -353,7 +355,7 @@ msgid "Install selected packages"
 msgstr "Instalo paketat e përzgjedhura"
 
 msgid "Authentication is required to update the package cache"
-msgstr ""
+msgstr "Që të përditësohet fshehtinë paketash, lypset të bëhet mirëfilltësimi"
 
 msgid "Update package cache"
-msgstr ""
+msgstr "Përditëso fshehtinë paketash"

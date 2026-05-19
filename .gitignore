@@ -1,3 +1,4 @@
+*.ORIG/
 .tx/
 *.bak/
 *~/
@@ -5,8 +6,9 @@
 *~
 debian/.debhelper/
 debian/debhelper-build-stamp
-debian/files
+debian/*.debhelper.log
 debian/*.substvars
+debian/files
 debian/user-installed-packages/
 help/help/
 help/help.html

@@ -265,6 +265,8 @@ msgid ""
 "Package cache update failed. Check your internet connection or APT sources "
 "lists."
 msgstr ""
+"Não foi possível fazer a atualização dos cachês dos pacotes. Por favor, "
+"verifique a sua fonte de repositórios ou a sua conexão à internet."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -358,13 +360,13 @@ msgstr "Selecione um arquivo"
 #. The desktop entry comment will be shown within the menu.
 msgid "List user installed packages. Install packages from existing list."
 msgstr ""
-"Lista os pacotes instalados pelo usuário e instal os pacotes a partir de uma"
-" lista existente"
+"Lista os pacotes instalados pelo usuário e instala os pacotes a partir de "
+"uma lista existente"
 
 #. TRANSLATORS:
 #. Keywords to search in the menu. Hint: Add translated keywords to existing.
 msgid "apt;install;package;uip;"
-msgstr "apt;instalar;instalação;pacote;aplicativo;aplicação;uip;"
+msgstr "apt;instalar;instalação;pacote;aplicativo;aplicação;programa;uip;"
 
 msgid "Authentication is required to install selected packages"
 msgstr "A sua autenticação é necessária para instalar os pacotes selecionados"
@@ -373,7 +375,7 @@ msgid "Install selected packages"
 msgstr "Instalar os pacotes selecionados"
 
 msgid "Authentication is required to update the package cache"
-msgstr ""
+msgstr "É preciso se autenticar para atualizar os cachês dos pacotes"
 
 msgid "Update package cache"
-msgstr ""
+msgstr "Atualizar os cachês dos pacotes"

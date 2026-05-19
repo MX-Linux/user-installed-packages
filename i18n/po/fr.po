@@ -6,8 +6,8 @@
 # Translators:
 # anticapitalista <anticapitalista@riseup.net>, 2023
 # Emmanuel Brun <brun.manu@gmail.com>, 2023
-# Wallon Wallon, 2024
 # cyril cottet <cyrilusber2001@yahoo.fr>, 2026
+# Wallon Wallon, 2026
 # 
 #, fuzzy
 msgid ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
 "POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: cyril cottet <cyrilusber2001@yahoo.fr>, 2026\n"
+"Last-Translator: Wallon Wallon, 2026\n"
 "Language-Team: French (https://app.transifex.com/anticapitalista/teams/10162/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,15 +63,15 @@ msgid "MX User Installed Packages Changelog"
 msgstr "MX Journal des modifications des paquets installés par l’utilisateur"
 
 msgid "Date:"
-msgstr "Date :"
+msgstr "Date :"
 
 #. TRANSLATORS:
 #. The hostname of the system.
 msgid "Host:"
-msgstr "Hôte :"
+msgstr "Hôte :"
 
 msgid "System:"
-msgstr "Système :"
+msgstr "Système :"
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -95,7 +95,7 @@ msgstr "Liste des paquets indisponibles"
 
 msgid "The following packages are not available or cannot be installed:"
 msgstr ""
-"Les paquets suivants sont indisponibles ou ne peuvent pas être installés :"
+"Les paquets suivants sont indisponibles ou ne peuvent pas être installés :"
 
 msgid "MX - User Installed Packages"
 msgstr ""
@@ -110,7 +110,7 @@ msgstr ""
 "conservés."
 
 msgid "It combines two steps:"
-msgstr "Il s’agit d’une combinaison de deux étapes :"
+msgstr "Il s’agit d’une combinaison de deux étapes :"
 
 msgid "1) quickly and easily create a list of those packages"
 msgstr "1) créer rapidement et facilement une liste de ces paquets,"
@@ -131,7 +131,7 @@ msgstr ""
 "sélectionnés"
 
 msgid "You have no packages installed!"
-msgstr "Aucun paquet n’est installé !"
+msgstr "Aucun paquet n’est installé !"
 
 #. TRANSLATORS:
 #. There may be more than one sentence that needs to be translated.
@@ -139,9 +139,9 @@ msgstr "Aucun paquet n’est installé !"
 #. Do keep the count placeholder "%d".
 msgid "You have installed 1 package:"
 msgid_plural "You have installed %d packages:"
-msgstr[0] "Vous avez installé 1 paquet :"
-msgstr[1] "Vous avez installé %d paquets :"
-msgstr[2] "Vous avez installé %d paquets :"
+msgstr[0] "Vous avez installé 1 paquet :"
+msgstr[1] "Vous avez installé %d paquets :"
+msgstr[2] "Vous avez installé %d paquets :"
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -155,7 +155,7 @@ msgid "No file selected."
 msgstr "Aucun fichier sélectionné."
 
 msgid "Select which packages you want to install:"
-msgstr "Choisir les paquets que vous souhaitez installer :"
+msgstr "Choisir les paquets que vous souhaitez installer :"
 
 msgid "Install packages"
 msgstr "Installer les paquets"
@@ -165,6 +165,7 @@ msgstr "Installer les paquets"
 #. list are available.
 msgid "Please wait, checking package availability ..."
 msgstr ""
+"Veuillez patienter, vérification de la disponibilité des paquets en cours…"
 
 msgid "Missing Packages"
 msgstr "Paquets manquants"
@@ -173,7 +174,7 @@ msgstr "Paquets manquants"
 #. UIP = "User Installed Packages".
 #. The list of missing packages was saved under:
 msgid "[OK] UIP list of missing packages saved:"
-msgstr "[Validé] La liste UIP des paquets manquants est enregistrée :"
+msgstr "[Validé] La liste UIP des paquets manquants est enregistrée :"
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -185,7 +186,7 @@ msgstr "La liste UIP des paquets manquants n’a pas pu être enregistrée."
 #. Shown in a terminal window after package installation finishes.
 #. The user presses Enter to close the terminal.
 msgid "Press Enter to exit"
-msgstr "Appuyez sur Enter pour quitter"
+msgstr "Appuyez sur Entrée pour quitter"
 
 #. TRANSLATORS:
 #. Header shown in a terminal window that opens to install packages.
@@ -198,7 +199,7 @@ msgstr "Installation des paquets sélectionnés, veuillez vous authentifier"
 #. cache) is empty or outdated.
 #. The package cache is refreshed by running 'apt update'.
 msgid "Package Cache Warning"
-msgstr ""
+msgstr "Avertissement concernant le cache des paquets"
 
 #. TRANSLATORS:
 #. Button in the Package Cache Warning dialog.
@@ -210,7 +211,7 @@ msgstr "Mettre à jour maintenant"
 #. Button in the Package Cache Warning dialog.
 #. Skips the package database update and proceeds with installation.
 msgid "Continue Anyway"
-msgstr ""
+msgstr "Continuer quand même"
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
@@ -218,13 +219,13 @@ msgstr ""
 #. APT_UPDATE is a placeholder for the command "apt update" -- do not
 #. translate or change it.
 msgid "Run APT_UPDATE now to refresh the package cache?"
-msgstr ""
+msgstr "Exécuter APT_UPDATE maintenant pour actualiser le cache des paquets ?"
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
 msgid "The package cache is empty."
-msgstr ""
+msgstr "Le cache des paquets est vide."
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
@@ -235,27 +236,27 @@ msgstr ""
 #. days.
 msgid "The package cache has not been refreshed for %d day."
 msgid_plural "The package cache has not been refreshed for %d days."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Le cache des paquets n’a pas été actualisé depuis %d jour."
+msgstr[1] "Le cache des paquets n’a pas été actualisé depuis %d jours."
+msgstr[2] "Le cache des paquets n’a pas été actualisé depuis %d jours."
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
 msgid "The package cache may be outdated."
-msgstr ""
+msgstr "Le cache des paquets peut être obsolète."
 
 #. TRANSLATORS:
 #. Header shown in a terminal window that opens to run 'apt update'.
 #. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Updating package cache, please authenticate"
-msgstr ""
+msgstr "Actualisation du cache des paquets, veuillez vous authentifier"
 
 #. TRANSLATORS:
 #. Shown in a terminal window after 'apt update' finishes.
 #. The user presses Enter to close the terminal and return to the app.
 msgid "Press Enter to continue"
-msgstr ""
+msgstr "Appuyez sur Entrée pour continuer"
 
 #. TRANSLATORS:
 #. Shown after 'apt update' fails (e.g. no internet connection).
@@ -263,6 +264,8 @@ msgid ""
 "Package cache update failed. Check your internet connection or APT sources "
 "lists."
 msgstr ""
+"La mise à jour du cache des paquets n’a pas pu être effectuée. Vérifiez "
+"votre connexion Internet ou vos listes de sources APT."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -271,19 +274,19 @@ msgid "Select location to save file"
 msgstr "Sélectionnez l’emplacement pour enregistrer le fichier"
 
 msgid "File exists. Overwrite?"
-msgstr "Le fichier existe déjà. L’écraser ?"
+msgstr "Le fichier existe déjà. L’écraser ?"
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
 #. The list of user installed packages (UIP) was saved successfully under:
 msgid "[OK] UIP list saved:"
-msgstr "[Validé] La liste UIP est enregistrée :"
+msgstr "[Validé] La liste UIP est enregistrée :"
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
 #. The list of user installed packages (UIP) failed to save.
 msgid "UIP-list save file failed:"
-msgstr "L’enregistrement du fichier de la liste UIP a échoué :"
+msgstr "L’enregistrement du fichier de la liste UIP a échoué :"
 
 msgid "[ERROR]"
 msgstr "[ERREUR]"
@@ -299,7 +302,7 @@ msgstr "Choisir la liste UIP à charger"
 #. The selected file appears not to be a valid list of user installed packages
 #. (UIP).
 msgid "Not a valid UIP-list file:"
-msgstr "Fichier de liste UIP non valide :"
+msgstr "Fichier de liste UIP non valide :"
 
 #. TRANSLATORS:
 #. The selected file is directory not a regular file.
@@ -366,6 +369,7 @@ msgstr "Installer les paquets sélectionnés"
 
 msgid "Authentication is required to update the package cache"
 msgstr ""
+"Une authentification est nécessaire pour mettre à jour le cache des paquets"
 
 msgid "Update package cache"
-msgstr ""
+msgstr "Mettre à jour le cache des paquets"

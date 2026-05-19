@@ -249,6 +249,8 @@ msgid ""
 "Package cache update failed. Check your internet connection or APT sources "
 "lists."
 msgstr ""
+"Paket cache uppdatering misslyckades. Kontrollera din internetanslutning  "
+"eller APT sources lists."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -349,7 +351,7 @@ msgid "Install selected packages"
 msgstr "Installera valda paket"
 
 msgid "Authentication is required to update the package cache"
-msgstr ""
+msgstr "Autentisering krävs för att uppdatera paket cache"
 
 msgid "Update package cache"
-msgstr ""
+msgstr "Uppdatera paket cache"

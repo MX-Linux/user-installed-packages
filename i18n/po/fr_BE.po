@@ -46,7 +46,8 @@ msgid "License"
 msgstr "Licence"
 
 msgid "MX User Installed Packages"
-msgstr "MX Paquets installés par l’utilisateur - MX User Installed Packages"
+msgstr ""
+"MX Paquets installés par l’utilisateur•rice - MX User Installed Packages"
 
 msgid "About MX User Installed Packages"
 msgstr "À propos de MX User Installed Packages"
@@ -54,10 +55,11 @@ msgstr "À propos de MX User Installed Packages"
 msgid "An app to list and re-install user installed packages."
 msgstr ""
 "Une application pour lister et réinstaller les paquets installés par "
-"l’utilisateur."
+"l’utilisateur•rice."
 
 msgid "MX User Installed Packages Changelog"
-msgstr "MX Journal des modifications des paquets installés par l’utilisateur"
+msgstr ""
+"MX Journal des modifications des paquets installés par l’utilisateur•rice"
 
 msgid "Date:"
 msgstr "Date:"
@@ -76,7 +78,7 @@ msgstr "Système:"
 #. TRANSLATORS:
 #. The desktop entry name will be displayed within the menu.
 msgid "User Installed Packages"
-msgstr "Paquets installés par l’utilisateur"
+msgstr "Paquets installés par l’utilisateur•rice"
 
 msgid "Package name"
 msgstr "Nom du paquet"
@@ -85,7 +87,7 @@ msgid "Description"
 msgstr "Description"
 
 msgid "List of user installed packages"
-msgstr "Liste des paquets installés par l’utilisateur"
+msgstr "Liste des paquets installés par l’utilisateur•rice"
 
 msgid "List of unavailable packages"
 msgstr "Liste des paquets indisponibles"
@@ -96,14 +98,14 @@ msgstr ""
 
 msgid "MX - User Installed Packages"
 msgstr ""
-"MX - Paquets installés par l’utilisateur - MX - User Installed Packages"
+"MX - Paquets installés par l’utilisateur•rice - MX - User Installed Packages"
 
 msgid ""
 "This app is designed to make it easy to reinstall packages that the user has"
 " added to the default installation and retained."
 msgstr ""
 "Cette application est conçue pour faciliter la réinstallation des paquets "
-"que l’utilisateur a ajoutés à l’installation par défaut et qu’il a "
+"que l’utilisateur•rice a ajoutés à l’installation par défaut et qu’il a "
 "conservés."
 
 msgid "It combines two steps:"
@@ -120,7 +122,7 @@ msgstr ""
 "réinstaller ces paquets, s’ils sont toujours disponibles."
 
 msgid "Create a list of user installed packages"
-msgstr "Créer une liste des paquets installés par l’utilisateur"
+msgstr "Créer une liste des paquets installés par l’utilisateur•rice"
 
 msgid "Open a previously saved list and install selected packages"
 msgstr ""
@@ -145,7 +147,7 @@ msgstr[2] "Vous avez installé %d paquets:"
 #. The list of user installed packages (UIP) failed to save.
 msgid "The UIP list of packages installed by the user could not be saved"
 msgstr ""
-"La liste UIP des paquets installés par l’utilisateur n’a pas pu être "
+"La liste UIP des paquets installés par l’utilisateur•rice n’a pas pu être "
 "enregistrée."
 
 msgid "No file selected."
@@ -162,6 +164,7 @@ msgstr "Installer les paquets"
 #. list are available.
 msgid "Please wait, checking package availability ..."
 msgstr ""
+"Veuillez patienter, vérification de la disponibilité des paquets en cours …"
 
 msgid "Missing Packages"
 msgstr "Paquets manquants"
@@ -195,7 +198,7 @@ msgstr "Installation des paquets sélectionnés, veuillez vous authentifier"
 #. cache) is empty or outdated.
 #. The package cache is refreshed by running 'apt update'.
 msgid "Package Cache Warning"
-msgstr ""
+msgstr "Avertissement concernant le cache des paquets"
 
 #. TRANSLATORS:
 #. Button in the Package Cache Warning dialog.
@@ -207,7 +210,7 @@ msgstr "Mettre à jour maintenant"
 #. Button in the Package Cache Warning dialog.
 #. Skips the package database update and proceeds with installation.
 msgid "Continue Anyway"
-msgstr ""
+msgstr "Continuer quand même"
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
@@ -215,13 +218,13 @@ msgstr ""
 #. APT_UPDATE is a placeholder for the command "apt update" -- do not
 #. translate or change it.
 msgid "Run APT_UPDATE now to refresh the package cache?"
-msgstr ""
+msgstr "Exécuter APT_UPDATE maintenant pour actualiser le cache des paquets?"
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
 msgid "The package cache is empty."
-msgstr ""
+msgstr "Le cache des paquets est vide."
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
@@ -232,27 +235,27 @@ msgstr ""
 #. days.
 msgid "The package cache has not been refreshed for %d day."
 msgid_plural "The package cache has not been refreshed for %d days."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Le cache des paquets n’a pas été actualisé depuis %d jour."
+msgstr[1] "Le cache des paquets n’a pas été actualisé depuis %d jours."
+msgstr[2] "Le cache des paquets n’a pas été actualisé depuis %d jours."
 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
 msgid "The package cache may be outdated."
-msgstr ""
+msgstr "Le cache des paquets peut être obsolète."
 
 #. TRANSLATORS:
 #. Header shown in a terminal window that opens to run 'apt update'.
 #. 'authenticate' means the user must enter their password (sudo/pkexec).
 msgid "Updating package cache, please authenticate"
-msgstr ""
+msgstr "Actualisation du cache des paquets, veuillez vous authentifier"
 
 #. TRANSLATORS:
 #. Shown in a terminal window after 'apt update' finishes.
 #. The user presses Enter to close the terminal and return to the app.
 msgid "Press Enter to continue"
-msgstr ""
+msgstr "Appuyez sur Enter pour continuer"
 
 #. TRANSLATORS:
 #. Shown after 'apt update' fails (e.g. no internet connection).
@@ -260,6 +263,8 @@ msgid ""
 "Package cache update failed. Check your internet connection or APT sources "
 "lists."
 msgstr ""
+"La mise à jour du cache des paquets n’a pas pu être effectuée. Vérifiez "
+"votre connexion Internet ou vos listes de sources APT."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -346,7 +351,7 @@ msgstr "Choisir un fichier"
 #. The desktop entry comment will be shown within the menu.
 msgid "List user installed packages. Install packages from existing list."
 msgstr ""
-"Liste des paquets installés par l’utilisateur. Installer des paquets à "
+"Liste des paquets installés par l’utilisateur•rice. Installer des paquets à "
 "partir d’une liste existante."
 
 #. TRANSLATORS:
@@ -363,6 +368,7 @@ msgstr "Installer les paquets sélectionnés"
 
 msgid "Authentication is required to update the package cache"
 msgstr ""
+"Une authentification est nécessaire pour mettre à jour le cache des paquets"
 
 msgid "Update package cache"
-msgstr ""
+msgstr "Mettre à jour le cache des paquets"
