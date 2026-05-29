@@ -7,8 +7,8 @@
 # anticapitalista <anticapitalista@riseup.net>, 2023
 # marcelo cripe <marcelocripe@gmail.com>, 2023
 # Hugo Carvalho <hugokarvalho@hotmail.com>, 2023
-# Paulo C., 2026
 # José Vieira <jvieira33@sapo.pt>, 2026
+# Paulo C., 2026
 # 
 #, fuzzy
 msgid ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
 "POT-Creation-Date: 2026-05-13 00:42+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: José Vieira <jvieira33@sapo.pt>, 2026\n"
+"Last-Translator: Paulo C., 2026\n"
 "Language-Team: Portuguese (https://app.transifex.com/anticapitalista/teams/10162/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -257,6 +257,8 @@ msgid ""
 "Package cache update failed. Check your internet connection or APT sources "
 "lists."
 msgstr ""
+"Erro ao atualizar cache dos pacotes. Verifique a ligação à internet ou a sua"
+" fonte de repositórios."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -358,7 +360,7 @@ msgid "Install selected packages"
 msgstr "Instalar os pacotes seleccionados"
 
 msgid "Authentication is required to update the package cache"
-msgstr ""
+msgstr "É necessário autenticar-se para atualizar a cache dos pacotes"
 
 msgid "Update package cache"
-msgstr ""
+msgstr "Atualizar a cache de pacotes"

@@ -1,0 +1,35 @@
+# bash completion for user-installed-packages
+
+_user_installed_packages() {
+    local cur prev words cword
+    _init_completion || return
+
+    local all_opts="
+        --generate --install --cli --help --version
+        -g -i -c -h -v
+        --file --output
+        -f -o
+    "
+
+    case "$prev" in
+        -f|--file)
+            # --install: prefer uip-list-*.txt; fall back to all files
+            # --generate: any file, or - for stdout
+            if [[ " ${words[*]} " =~ " -i " || " ${words[*]} " =~ " --install " ]]; then
+                COMPREPLY=($(compgen -G "uip-list-*.txt" -- "$cur"))
+            fi
+            if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+                COMPREPLY+=($(compgen -W "-" -- "$cur"))
+                _filedir
+            fi
+            return ;;
+        -o|--output)
+            _filedir -d
+            return ;;
+    esac
+
+    COMPREPLY=($(compgen -W "$all_opts" -- "$cur"))
+}
+
+complete -F _user_installed_packages user-installed-packages
+complete -F _user_installed_packages uip

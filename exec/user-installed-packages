@@ -9,7 +9,52 @@
 export PACKAGE_NAME="user-installed-packages"
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=${PACKAGE_NAME}
-source gettext.sh
+
+# Wrapper: sanitize bad chars from translated strings so they are safe
+# to embed in terminal command strings (bash -c).
+#
+# Removed chars (stripped entirely):
+#   \x24  $   dollar sign     -- shell variable expansion
+#   \x60  `   backtick        -- command substitution
+#         |   pipe            -- command chaining
+#         >   greater-than    -- output redirection
+#         <   less-than       -- input redirection
+#         &   ampersand       -- background / command separator
+#
+# Replaced chars (kept visible, made shell-safe):
+#   \x27  '   ASCII single quote  ->  \xe2\x80\x99  ’  right single curly quote (U+2019)
+#   \x22  "   ASCII double quote  ->  \xe2\x80\x9d  ”  right double curly quote (U+201D)
+#         ;   semicolon           ->  ,  comma
+gettext() {
+    local _s _rsq=$'\xe2\x80\x99' _rdq=$'\xe2\x80\x9d'
+    _s=$(/usr/bin/gettext "$@")
+    _s=${_s//[$'\x24\x60'|><&]/}
+    _s=${_s//$'\x27'/$_rsq}
+    _s=${_s//$'\x22'/$_rdq}
+    _s=${_s//;/,}
+    printf '%s' "$_s"
+}
+ngettext() {
+    local _s _rsq=$'\xe2\x80\x99' _rdq=$'\xe2\x80\x9d'
+    _s=$(/usr/bin/ngettext "$@")
+    _s=${_s//[$'\x24\x60'|><&]/}
+    _s=${_s//$'\x27'/$_rsq}
+    _s=${_s//$'\x22'/$_rdq}
+    _s=${_s//;/,}
+    printf '%s' "$_s"
+}
+export -f gettext
+export -f ngettext
+
+# GUI mode: true when a display is available; CLI flags can override
+UIP_GUI=false
+[ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && UIP_GUI=true
+
+# CLI command parsed early; populated by CLI option parsing below
+_UIP_CLI_CMD=""
+_UIP_CLI_FILE=""
+_UIP_CLI_OUTDIR=""
+_UIP_FORCE_CLI=false
 
 # buttons
 export BTN_ABOUT=$(gettext "About")  ; BTN_ABOUT+='!help-about'
@@ -24,7 +69,8 @@ export BTN_SAVE=$(gettext 'Save List') ; BTN_SAVE+='!document-save'
 
 #define some gobals
 export UIP_ICON="user-installed-packages"
-[ -e "$UIP_ICON" ] && UIP_ICON=/usr/share/pixmaps/${UIP_ICON}.svg
+export UIP_ICON_PATH="/usr/share/pixmaps/${UIP_ICON}.svg"
+[ -f "$UIP_ICON_PATH" ] && UIP_ICON="$UIP_ICON_PATH"
 export UIP_CLASS="user-installed-packages"
 export UIP_SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
@@ -37,9 +83,34 @@ export UIP_CHANGELOG_TITLE=$(gettext "MX User Installed Packages Changelog")
 export UIP_VERSION="@VERSION@"
 export UIP_URL="https://mxlinux.org"
 
-case "${1:-}" in
-    --version|-V) echo "$UIP_VERSION"; exit 0 ;;
-esac
+# Parse CLI commands and options before GUI startup
+_args=("$@")
+_i=0
+while (( _i < ${#_args[@]} )); do
+    case "${_args[$_i]}" in
+        --version|-v) echo "$UIP_VERSION"; exit 0 ;;
+        --generate|-g) _UIP_CLI_CMD="create";  (( _i++ )) ;;
+        --install|-i)  _UIP_CLI_CMD="install"; (( _i++ )) ;;
+        --help|-h)     _UIP_CLI_CMD="help";    (( _i++ )) ;;
+        -f|--file)
+            (( _i++ ))
+            _UIP_CLI_FILE="${_args[$_i]:-}"
+            [ -z "$_UIP_CLI_FILE" ] && { echo "Option --file requires an argument." >&2; exit 1; }
+            (( _i++ )) ;;
+        -o|--output)
+            (( _i++ ))
+            _UIP_CLI_OUTDIR="${_args[$_i]:-}"
+            [ -z "$_UIP_CLI_OUTDIR" ] && { echo "Option --output requires an argument." >&2; exit 1; }
+            (( _i++ )) ;;
+        --cli|-c)      _UIP_FORCE_CLI=true; (( _i++ )) ;;
+        --) (( _i++ )); break ;;
+        -*) (( _i++ )) ;;  # unknown options passed through to GUI main()
+        *)  break ;;
+    esac
+done
+unset _args _i
+
+$_UIP_FORCE_CLI && UIP_GUI=false
 
 export INSTALLED_PACKAGES="/usr/share/antiX/installed-packages.txt"
 if [ ! -f $INSTALLED_PACKAGES ]; then
@@ -104,6 +175,10 @@ export ARCH=$(dpkg --print-architecture)
 
 #MAIN WINDOW
 main() {
+    case "${_UIP_CLI_CMD:-}" in
+        create)  uip_list; return ;;
+        install) uip_load; return ;;
+    esac
 
     TITLE_MAIN=$(gettext 'MX - User Installed Packages')
 
@@ -174,13 +249,17 @@ show_changelog() {
         --button="${BTN_CLOSE}:1"
         --text-info
         )
+    local tmp_changelog
+    tmp_changelog=$(mktemp /tmp/uip-changelog-XXXXXX)
     if [ -s "$changelog" ]; then
-        zcat "$changelog" 2>&1 | "${YAD_CHANGELOG[@]}"
+        zcat "$changelog" > "$tmp_changelog" 2>/dev/null
     else
         PAGER=cat apt-get -qq \
             -o "Acquire::Changelogs::URI::Origin::${ORIGIN}=${URI}" \
-            changelog user-installed-packages 2>&1 | "${YAD_CHANGELOG[@]}"
+            changelog user-installed-packages > "$tmp_changelog" 2>/dev/null
     fi
+    "${YAD_CHANGELOG[@]}" --filename="$tmp_changelog"
+    rm -f "$tmp_changelog"
     show_about
 }
 
@@ -233,11 +312,7 @@ export -f uip_help
 
 #function uip_list
 
-uip_list() {
-
-    #create list
-    NOW=$(date +%y"%m%d")
-
+uip_build_list() {
     UIP=($(comm -23 \
        <( eval apt-mark showmanual "$GREP_FILTER" | sed 's/[[:space:]].*//' | sort -u) \
        <( { sed -r "s/[[:space:]].*//;                     # remove all after white space
@@ -251,9 +326,18 @@ uip_list() {
                    /^:/d;                                  # remove leftover colon lines
                    /^$/d;                                  # remove empty lines" |
             grep -vF "|";                                  # remove alternative dependencies
-          } | sort -u | grep -vw -E 'xfe|xfe-themes|xfe-i18n' 
+          } | sort -u | grep -vw -E 'xfe|xfe-themes|xfe-i18n'
          )
     ))
+}
+export -f uip_build_list
+
+uip_list() {
+
+    #create list
+    NOW=$(date +%y"%m%d")
+
+    uip_build_list
 
     UIP_COUNT="${#UIP[*]}"
     if (( UIP_COUNT == 0 )); then
@@ -332,7 +416,11 @@ export -f uip_list
 
 uip_load() {
 
-    UIP_LOAD_FILE=$(uip_select_list_file "") || exit
+    if [ -n "${_UIP_CLI_FILE:-}" ] && [ -f "$_UIP_CLI_FILE" ]; then
+        UIP_LOAD_FILE="$_UIP_CLI_FILE"
+    else
+        UIP_LOAD_FILE=$(uip_select_list_file "") || exit
+    fi
 
     UIP_CHECK_LOADED=()
     unset UIP_HASH_LOADED
@@ -496,7 +584,7 @@ NotUsed
             DATA=$UIP_UNAVAILABLE_HEADER
             DATA+="$UIP_DATA"
 
-            local now=$(date '+%y%m%d-%H%M%S')
+            local now=$(date '+%Y.%m.%d_%H%M%S')
             local save_file="uip-missing-$now.txt"
             local selected_file
             # TRANSLATORS:
@@ -531,19 +619,6 @@ NotUsed
     # Header shown in a terminal window that opens to install packages.
     # 'authenticate' means the user must enter their password (sudo/pkexec).
     INSTALL_MESSAGE=$(gettext "Installing selected packages, please authenticate")
-    local AQ DQ RSQ RDQ
-    AQ=$(printf \\x27)             # ASCII single quote
-    DQ=$(printf \\x22)             # ASCII double quote
-    RSQ=$(printf \\xe2\\x80\\x99)  # right single curly quote U+2019
-    RDQ=$(printf \\xe2\\x80\\x9d)  # right double curly quote U+201D
-    HOLDMESSAGE=${HOLDMESSAGE//[\$\`\|\>\<\&]/}
-    HOLDMESSAGE=${HOLDMESSAGE//${AQ}/$RSQ}
-    HOLDMESSAGE=${HOLDMESSAGE//${DQ}/$RDQ}
-    HOLDMESSAGE=${HOLDMESSAGE//;/,}
-    INSTALL_MESSAGE=${INSTALL_MESSAGE//[\$\`\|\>\<\&]/}
-    INSTALL_MESSAGE=${INSTALL_MESSAGE//${AQ}/$RSQ}
-    INSTALL_MESSAGE=${INSTALL_MESSAGE//${DQ}/$RDQ}
-    INSTALL_MESSAGE=${INSTALL_MESSAGE//;/,}
 
     CMD="echo ${INSTALL_MESSAGE}; "
     local polkit_pattern='polkit-(gnome|kde|mate)-authentication-agent|lxqt-policykit-agent'
@@ -564,7 +639,7 @@ NotUsed
     TERMINAL_BASENAME=$(basename -s .wrapper  $(realpath $(command -v x-terminal-emulator)))
     case "$TERMINAL_BASENAME"  in
         xfce4-terminal)
-            xfce4-terminal --disable-server -x bash -c "$CMD ${UIP_INSTALLABLE[*]}; $HLD"
+            xfce4-terminal ${SESSION_MANAGER:+--disable-server} -x bash -c "$CMD ${UIP_INSTALLABLE[*]}; $HLD"
             ;;
             *)
             x-terminal-emulator -e bash -c "$CMD ${UIP_INSTALLABLE[*]}; $HLD"
@@ -574,7 +649,111 @@ NotUsed
 export -f uip_load
 
 
+uip_confirm() {
+    local question="$1"
+    local yesstr nostr yesexpr
+    yesstr=$(locale yesstr 2>/dev/null); yesstr="${yesstr:-yes}"
+    nostr=$(locale nostr   2>/dev/null); nostr="${nostr:-no}"
+    yesexpr=$(locale yesexpr 2>/dev/null); yesexpr="${yesexpr:-^[yY]}"
+    local ychar nchar
+    ychar=$(printf '%s' "${yesstr:0:1}" | tr '[:lower:]' '[:upper:]')
+    nchar=$(printf '%s' "${nostr:0:1}"  | tr '[:upper:]' '[:lower:]')
+    local reply
+    printf '%s [%s/%s] ' "$question" "$ychar" "$nchar" >&2
+    read -r reply
+    reply="${reply#"${reply%%[![:space:]]*}"}"
+    reply="${reply%"${reply##*[![:space:]]}"}"
+    [ -z "$reply" ] && return 0
+    [[ "$reply" =~ $yesexpr ]] && return 0
+    return 1
+}
+export -f uip_confirm
+
 uip_check_apt_cache() {
+    if ! $UIP_GUI; then
+        # CLI mode: replicate cache check logic, prompt via stdin
+        local cache_empty=false cache_stale=false stale_days=0
+        case "${UIP_DEBUG_APT_CACHE,,}" in
+            empty)       cache_empty=true ;;
+            stale-month) cache_stale=true; stale_days=30 ;;
+            stale-day)   cache_stale=true; stale_days=1  ;;
+            stale)       cache_stale=true; stale_days=2  ;;
+            *)
+                local cache_count
+                cache_count=$(apt-cache dumpavail 2>/dev/null | wc -l)
+                if (( cache_count == 0 )); then
+                    cache_empty=true
+                else
+                    local now=0 last_update=0 t
+                    now=$(date +%s)
+                    if [ -f /var/lib/apt/periodic/update-stamp ]; then
+                        t=$(stat -c %Y /var/lib/apt/periodic/update-stamp 2>/dev/null)
+                        last_update=${t:-0}
+                    elif [ -f /var/cache/apt/pkgcache.bin ]; then
+                        t=$(stat -c %Y /var/cache/apt/pkgcache.bin 2>/dev/null)
+                        last_update=${t:-0}
+                    fi
+                    if (( last_update == 0 || now - last_update > 86400 )); then
+                        cache_stale=true
+                        stale_days=$(( (now - last_update) / 86400 ))
+                        (( stale_days < 1 )) && stale_days=1
+                    fi
+                fi
+                ;;
+        esac
+        $cache_empty || $cache_stale || return 0
+        if $cache_empty; then
+            # TRANSLATORS:
+            # The package cache is the local database of available software packages, refreshed by 'apt update'.
+            echo "$(gettext 'The package cache is empty.')" >&2
+        else
+            local days_msg
+            # TRANSLATORS:
+            # %d is the number of days since the package cache was last refreshed.
+            days_msg=$(ngettext                 'The package cache has not been refreshed for %d day.'                 'The package cache has not been refreshed for %d days.'                 "$stale_days")
+            echo "${days_msg/\%?/$stale_days}" >&2
+        fi
+        local reply
+        # TRANSLATORS:
+        # CLI prompt asking whether to run apt update now.
+        uip_confirm "$(gettext 'Update now?')" || return 0
+
+        local uip_apt_update="/usr/libexec/user-installed-packages/uip-apt-update"
+        [ -x "${UIP_SCRIPT_DIR}/uip-apt-update" ] && uip_apt_update="${UIP_SCRIPT_DIR}/uip-apt-update"
+
+        local apt_has_stamp_hook=false uip_update_stamp before_update
+        apt-config dump "APT::Update::Post-Invoke-Success" 2>/dev/null             | grep -qE "touch\s+/var/lib/apt/periodic/update-stamp"             && apt_has_stamp_hook=true
+        uip_update_stamp="/tmp/uip-$(logname)-update-stamp"
+        before_update=$(date +%s)
+
+        if [ -x "$uip_apt_update" ]; then
+            sudo "$uip_apt_update"
+        else
+            sudo apt update
+        fi
+
+        local update_ok=false t
+        if $apt_has_stamp_hook; then
+            [ -f /var/lib/apt/periodic/update-stamp ] &&
+                t=$(stat -c %Y /var/lib/apt/periodic/update-stamp 2>/dev/null) &&
+                (( t > before_update )) && update_ok=true
+        else
+            [ -f "$uip_update_stamp" ] &&
+                t=$(stat -c %Y "$uip_update_stamp" 2>/dev/null) &&
+                (( t > before_update )) && update_ok=true
+            rm -f "$uip_update_stamp" 2>/dev/null
+        fi
+
+        if ! $update_ok; then
+            echo "$(gettext 'Package cache update failed. Check your internet connection or APT sources lists.')" >&2
+            # TRANSLATORS:
+            # CLI prompt asking whether to continue despite apt update failure.
+            uip_confirm "$(gettext 'Continue anyway?')" && return 0
+            return 1
+        fi
+        return 0
+    fi
+
     local cache_empty=false
     local cache_stale=false
 
@@ -686,15 +865,6 @@ uip_check_apt_cache() {
         # Shown in a terminal window after 'apt update' finishes.
         # The user presses Enter to close the terminal and return to the app.
         hold_msg=$(gettext 'Press Enter to continue')
-        local RSQ=$'\xe2\x80\x99' RDQ=$'\xe2\x80\x9d'
-        update_msg=${update_msg//[\$\`\|\>\<\&]/}
-        update_msg=${update_msg//\'/$RSQ}
-        update_msg=${update_msg//\"/$RDQ}
-        update_msg=${update_msg//;/,}
-        hold_msg=${hold_msg//[\$\`\|\>\<\&]/}
-        hold_msg=${hold_msg//\'/$RSQ}
-        hold_msg=${hold_msg//\"/$RDQ}
-        hold_msg=${hold_msg//;/,}
 
         local uip_apt_update="/usr/libexec/user-installed-packages/uip-apt-update"
         if [ -x /usr/bin/pkexec ] && pgrep -u "$(id -u)" -f "$polkit_pattern" >/dev/null; then
@@ -722,7 +892,7 @@ uip_check_apt_cache() {
         TERMINAL_BASENAME=$(basename -s .wrapper "$(realpath "$(command -v x-terminal-emulator)")")
         case "$TERMINAL_BASENAME" in
             xfce4-terminal)
-                xfce4-terminal --disable-server -x bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
+                xfce4-terminal ${SESSION_MANAGER:+--disable-server} -x bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
                 ;;
             *)
                 x-terminal-emulator -e bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
@@ -768,6 +938,7 @@ export -f uip_check_apt_cache
 
 
 uip_wait_start() {
+    $UIP_GUI || return 0
     local title="$1" msg="$2"
     _UIP_WAIT_PID=
     _UIP_WAIT_FD=
@@ -816,6 +987,7 @@ export _UIP_WAIT_PID _UIP_WAIT_FD _UIP_WAIT_FEED_PID
 
 
 uip_wait_stop() {
+    $UIP_GUI || return 0
     if [ -n "$_UIP_WAIT_FEED_PID" ]; then
         kill "$_UIP_WAIT_FEED_PID" 2>/dev/null
         wait "$_UIP_WAIT_FEED_PID" 2>/dev/null
@@ -1134,8 +1306,249 @@ uip_notify() {
 }
 export -f uip_notify
 
+
+cli_usage() {
+    cat >&2 <<EOF
+Usage: $(basename "$0") COMMAND [OPTIONS]
+
+Commands:
+  -g, --generate    $(gettext 'Create a list of user installed packages')
+  -i, --install     $(gettext 'Open a previously saved list and install selected packages')
+  -c, --cli         Force CLI mode
+  -h, --help        Show this help
+
+Options:
+  -f, --file FILE   File to write (--generate) or read (--install); use - for stdout
+  -o, --output DIR  Output directory for saved files (default: current dir)
+EOF
+}
+
+cli_create() {
+    local opt_file="$_UIP_CLI_FILE"
+    local opt_outdir="$_UIP_CLI_OUTDIR"
+
+    if [ -n "$opt_file" ] && [ "$opt_file" != "-" ] && [ -n "$opt_outdir" ]; then
+        echo "Error: --file and --output cannot be used together with --generate." >&2
+        cli_usage; return 1
+    fi
+
+    local outfile="" to_stdout=false
+    local auto_name="uip-list-$(date +%Y.%m.%d_%H%M%S).txt"
+
+    if [ "$opt_file" = "-" ]; then
+        to_stdout=true
+    elif [ -n "$opt_file" ]; then
+        outfile="$opt_file"
+    elif [ -n "$opt_outdir" ]; then
+        outfile="$opt_outdir/$auto_name"
+    else
+        outfile="./$auto_name"
+    fi
+
+    uip_build_list
+
+    local count="${#UIP[@]}"
+    if (( count == 0 )); then
+        echo "$(gettext 'You have no packages installed!')" >&2
+        return 1
+    fi
+
+    {
+        printf "# UIP - %s\n" "$UIP_ABOUT"
+        printf "# %-10s %s\n" "$MSG_DATE"   "$(date -R)"
+        printf "# %-10s %s\n" "$MSG_HOST"   "$(hostname)"
+        printf "# %-10s %s\n" "$MSG_SYSTEM" "$(cat /etc/mx-version 2>/dev/null ||
+                                               cat /etc/antix-version 2>/dev/null)"
+        printf "#\n"
+        printf "# %s\n" "$(gettext 'List of user installed packages')"
+        printf "#\n"
+        local PKG_WIDTH PADDS SPACE FORMAT
+        PKG_WIDTH=$(printf "%s\n" "${UIP[@]}" | wc -L)
+        PKG_WIDTH=$(( PKG_WIDTH + 6 ))
+        PADDS="          "
+        SPACE=$(printf '%s' "${PADDS:0:${#ARCH}}")
+        FORMAT='${binary:Package;-'"$PKG_WIDTH"'}  ${binary:Summary}\n'
+        dpkg-query -f "$FORMAT" -W "${UIP[@]}" | sed "s/:$ARCH/ $SPACE/" | tr '`' "'"
+    } | if $to_stdout; then
+        cat
+    else
+        local outdir
+        outdir=$(dirname "$outfile")
+        if [ ! -d "$outdir" ]; then
+            local msg_nodir
+            # TRANSLATORS: %s is the directory path.
+            msg_nodir=$(gettext 'Output directory does not exist: %s')
+            printf '%s\n' "$(printf "$msg_nodir" "$outdir")" >&2
+            return 1
+        fi
+        if [ -e "$outfile" ]; then
+            local msg_exists
+            # TRANSLATORS: %s is the file path.
+            msg_exists=$(gettext 'File already exists, will not overwrite: %s')
+            printf '%s\n' "$(printf "$msg_exists" "$outfile")" >&2
+            return 1
+        fi
+        local msg_list msg_saved
+        msg_list=$(gettext 'List of user installed packages')
+        # TRANSLATORS: %d is the number of packages saved.
+        msg_saved=$(ngettext 'Saved %d package to:' 'Saved %d packages to:' "$count")
+        cat > "$outfile" && printf '%s\n' "$msg_list - ${msg_saved/\%d/$count} $outfile" >&2
+    fi
+}
+
+cli_validate_file() {
+    local infile="$1"
+    local ERROR NOT_VALID
+    ERROR=$(gettext '[ERROR]')
+    NOT_VALID=$(gettext 'Not a valid UIP-list file:')
+
+    _cli_file_error() { printf '%s: %s\n%s\n%s\n' "$ERROR" "$NOT_VALID" "$infile" "$1" >&2; }
+
+    [ -d "$infile" ]   && { _cli_file_error "$(gettext 'Selected file is a directory.')"; return 1; }
+    # TRANSLATORS:
+    # The specified file does not exist. %s is the file path.
+    [ ! -e "$infile" ] && { printf '%s: %s: %s\n' "$ERROR" "$(gettext 'File not found')" "$infile" >&2; return 1; }
+    [ ! -f "$infile" ] && { _cli_file_error "$(gettext 'Not a regular file')";            return 1; }
+    [ ! -r "$infile" ] && { _cli_file_error "$(gettext 'File is not readable.')";          return 1; }
+
+    local FILETYPE
+    FILETYPE=$(file -bi "$infile")
+    if [ -n "${FILETYPE%%text/plain*}" ]; then
+        if [ -z "${FILETYPE%%text/*}" ]; then
+            _cli_file_error "$(gettext 'Not a plain ASCII text file') [${FILETYPE%%;*}]"
+        else
+            _cli_file_error "$(gettext 'Not a text file') [${FILETYPE%%;*}]"
+        fi
+        return 1
+    fi
+
+    local none_pkg
+    none_pkg=$(sed 's/^[[:space:]]*//; /^#/d; /^$/d; s/[[:space:]].*// ' "$infile" |
+               LC_ALL=C grep -v -E '^[a-z0-9._:+-]+')
+    [ -n "$none_pkg" ] && { _cli_file_error "$(gettext 'File contains invalid package names')"; return 1; }
+
+    local pkg_cnt
+    pkg_cnt=$(LC_ALL=C grep -c -E '^[a-z0-9._:+-]+([[:space:]]|$)' "$infile")
+    (( pkg_cnt == 0 )) && { _cli_file_error "$(gettext 'File contains no package names')"; return 1; }
+
+    return 0
+}
+
+cli_install() {
+    local infile="$_UIP_CLI_FILE"
+    local opt_outdir="$_UIP_CLI_OUTDIR"
+
+    if [ -z "$infile" ]; then
+        echo "$(gettext 'Usage:'): $(basename "$0") --install -f FILE" >&2
+        return 1
+    fi
+
+    cli_validate_file "$infile" || return 1
+
+    local -a pkgs=()
+    local -A pkg_desc=()
+    local pkg desc
+    while read -r pkg desc; do
+        pkgs+=("$pkg")
+        pkg_desc["$pkg"]="$desc"
+    done < <(sed -nr '/^[[:space:]]*#/d; /^[[:space:]]*$/d; s/[[:space:]]+/ /g; p' "$infile")
+
+    if (( ${#pkgs[@]} == 0 )); then
+        local msg_empty
+        # TRANSLATORS: %s is the file path.
+        msg_empty=$(gettext 'No packages found in: %s')
+        printf '%s\n' "$(printf "$msg_empty" "$infile")" >&2
+        return 1
+    fi
+
+    uip_check_apt_cache || return 1
+
+    local msg_checking
+    # TRANSLATORS: %d is the number of packages being checked.
+    msg_checking=$(ngettext 'Checking availability of %d package...' \
+                            'Checking availability of %d packages...' "${#pkgs[@]}")
+    printf '%s\n' "${msg_checking/\%d/${#pkgs[@]}}" >&2
+
+    local -a available=()
+    available=($(apt-cache -q madison "${pkgs[@]}" |
+                 grep Packages | awk '{print $1}' | sort -u))
+
+    local -a not_available=()
+    not_available=($(comm -23 \
+        <(printf '%s\n' "${pkgs[@]}"      | sort -u) \
+        <(printf '%s\n' "${available[@]}" | sort -u)))
+
+    if (( ${#not_available[@]} >= 1 )); then
+        local msg_not_avail
+        # TRANSLATORS: %d is the number of unavailable packages.
+        msg_not_avail=$(ngettext '%d package not available:' '%d packages not available:' \
+                                 "${#not_available[@]}")
+        printf '%s\n' "${msg_not_avail/\%d/${#not_available[@]}}" >&2
+        printf '  %s\n' "${not_available[@]}" >&2
+
+        # TRANSLATORS:
+        # CLI prompt asking whether to save the list of unavailable packages to a file.
+        if uip_confirm "$(gettext 'Save missing packages list?')"; then
+                local outdir="${opt_outdir:-$(dirname "$infile")}"
+                local missing_file="$outdir/uip-missing-$(date +%Y.%m.%d_%H%M%S).txt"
+                if [ ! -e "$missing_file" ]; then
+                    local PKG_WIDTH
+                    PKG_WIDTH=$(printf '%s\n' "${not_available[@]}" | wc -L)
+                    PKG_WIDTH=$(( PKG_WIDTH + 6 ))
+                    {
+                        printf "# UIP - %s\n" "$UIP_ABOUT"
+                        printf "# %-10s %s\n" "$MSG_DATE"   "$(date -R)"
+                        printf "# %-10s %s\n" "$MSG_HOST"   "$(hostname)"
+                        printf "# %-10s %s\n" "$MSG_SYSTEM" \
+                            "$(cat /etc/mx-version 2>/dev/null || cat /etc/antix-version 2>/dev/null)"
+                        printf "#\n"
+                        printf "# %s\n" "$(gettext 'List of unavailable packages')"
+                        printf "#\n"
+                        for pkg in "${not_available[@]}"; do
+                            printf "%-${PKG_WIDTH}s %s\n" "$pkg" "${pkg_desc[$pkg]}"
+                        done
+                    } > "$missing_file"
+                    local msg_missing_saved
+                    # TRANSLATORS: %s is the file path.
+                    msg_missing_saved=$(gettext 'Missing packages list saved to: %s')
+                    printf '%s\n' "$(printf "$msg_missing_saved" "$missing_file")" >&2
+                fi
+        fi
+    fi
+
+    if (( ${#available[@]} == 0 )); then
+        echo "$(gettext 'No packages available to install.')" >&2
+        return 1
+    fi
+
+    local msg_installing
+    # TRANSLATORS: %d is the number of packages being installed.
+    msg_installing=$(ngettext 'Installing %d package...' 'Installing %d packages...' \
+                              "${#available[@]}")
+    printf '%s\n' "${msg_installing/\%d/${#available[@]}}" >&2
+
+    sudo apt install "${available[@]}"
+}
+
+cli_main() {
+    case "$_UIP_CLI_CMD" in
+        create)  cli_create  ;;
+        install) cli_install ;;
+        help)    cli_usage   ;;
+        *)       cli_usage; exit 1 ;;
+    esac
+}
+
 #--------
-main "$@"
+if [ "${_UIP_CLI_CMD:-}" = "help" ] || ( $_UIP_FORCE_CLI && [ -z "${_UIP_CLI_CMD:-}" ] ); then
+    cli_usage; exit 0
+elif $UIP_GUI; then
+    main "$@"
+elif [ -n "$_UIP_CLI_CMD" ]; then
+    cli_main
+else
+    cli_usage; exit 1
+fi
 #--------
 
 

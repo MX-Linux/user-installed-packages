@@ -65,13 +65,17 @@ show_changelog() {
         --text-info
         )
 
+    local tmp_changelog
+    tmp_changelog=$(mktemp /tmp/uip-changelog-XXXXXX)
     if [ -s "$changelog" ]; then
-        zcat "$changelog" 2>&1 | "${YAD_CHANGELOG[@]}"
+        zcat "$changelog" > "$tmp_changelog" 2>/dev/null
     else
         PAGER=cat apt-get -qq \
             -o "Acquire::Changelogs::URI::Origin::${ORIGIN}=${URI}" \
-            changelog "$PKGNAME" 2>&1 | "${YAD_CHANGELOG[@]}"
+            changelog "$PKGNAME" > "$tmp_changelog" 2>/dev/null
     fi
+    "${YAD_CHANGELOG[@]}" --filename="$tmp_changelog"
+    rm -f "$tmp_changelog"
     show_about
 }
 

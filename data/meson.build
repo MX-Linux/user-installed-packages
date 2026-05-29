@@ -12,6 +12,11 @@ install_data(
         install_dir: get_option('datadir') / package_name
 )
 
+install_data(
+        'bash-completion' / package_name,
+        install_dir: get_option('datadir') / 'bash-completion' / 'completions'
+)
+
 merged_file = i18n.merge_file(
         input: 'org.mxlinux.user-installed-packages.policy',
         output: 'org.mxlinux.user-installed-packages.policy',

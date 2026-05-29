@@ -1,3 +1,15 @@
+user-installed-packages (26.05.3) mx; urgency=medium
+
+  * Fix changelog display crash on newer yad 14.x (write to tempfile, use --filename)
+  * Fix icon resolution: use full path when icon file exists
+  * Fix xfce4-terminal invocation on Fluxbox (SESSION_MANAGER empty)
+  * Add CLI interface: --generate, --install, --cli, --help, --version flags
+  * Add bash completion for all CLI options
+  * Add gettext/ngettext wrapper for automatic bad-char sanitization
+  * Translations refresh
+
+ -- fehlix <fehlix@mxlinux.org>  Fri, 29 May 2026 13:58:24 -0400
+
 user-installed-packages (26.05.2) mx; urgency=medium
 
   * Translations refresh
