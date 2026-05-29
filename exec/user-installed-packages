@@ -887,18 +887,24 @@ uip_check_apt_cache() {
             && apt_has_stamp_hook=true
         uip_update_stamp="/tmp/uip-$(logname)-update-stamp"
 
-        local before_update
+        local before_update _sentinel
         before_update=$(date +%s)
+        _sentinel=$(mktemp -u /tmp/uip-apt-update-XXXXXX)
         TERMINAL_BASENAME=$(basename -s .wrapper "$(realpath "$(command -v x-terminal-emulator)")")
         case "$TERMINAL_BASENAME" in
             xfce4-terminal)
-                xfce4-terminal ${SESSION_MANAGER:+--disable-server} -x bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
+                xfce4-terminal ${SESSION_MANAGER:+--disable-server} -x bash -c "trap 'touch $_sentinel' EXIT; echo $update_msg; $update_cmd; echo; echo $hold_msg; read x" &
                 ;;
             *)
-                x-terminal-emulator -e bash -c "echo $update_msg; $update_cmd; echo; echo $hold_msg; read x"
+                x-terminal-emulator -e bash -c "trap 'touch $_sentinel' EXIT; echo $update_msg; $update_cmd; echo; echo $hold_msg; read x" &
                 ;;
         esac
-
+        # Wait for sentinel (touched by EXIT trap when terminal shell exits, max 5 min)
+        local _elapsed=0
+        while [ ! -f "$_sentinel" ] && (( _elapsed < 300 )); do
+            sleep 1; (( _elapsed++ ))
+        done
+        rm -f "$_sentinel"
         local update_ok=false t
         if $apt_has_stamp_hook; then
             [ -f /var/lib/apt/periodic/update-stamp ] &&
