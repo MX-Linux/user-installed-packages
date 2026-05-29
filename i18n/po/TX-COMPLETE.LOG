@@ -1,6 +1,6 @@
 # Transifex resource user-installed-packages-mx 
 # with minimum completion percent 30%
-# generated at Tue, 19 May 2026 08:26:38 -0500
+# generated at Fri, 29 May 2026 13:01:16 -0500
    Nr.		Cnt.	 Compl.		Code		Language
    ---		----	 ------		----		--------
      1		  71	   100%    	ca      	ca	Catalan; Valencian
@@ -10,21 +10,21 @@
      5		  71	   100%    	fr      	fr	French
      6		  71	   100%    	fr_BE   	fr	French @ Belgium
      7		  71	   100%    	pl      	pl	Polish
-     8		  71	   100%    	pt_BR   	pt	Portuguese @ Brazil
-     9		  71	   100%    	sq      	sq	Albanian
-    10		  71	   100%    	sv      	sv	Swedish
-    11		  68	    95%    	nl      	nl	Dutch; Flemish
-    12		  68	    95%    	pt      	pt	Portuguese
-    13		  59	    83%    	el      	el	Greek, Modern (1453-)
-    14		  59	    83%    	fi      	fi	Finnish
-    15		  59	    83%    	gl_ES   	gl	Galician @ Spain
-    16		  59	    83%    	hu      	hu	Hungarian
-    17		  59	    83%    	it      	it	Italian
-    18		  59	    83%    	ja      	ja	Japanese
-    19		  59	    83%    	nb      	nb	Bokmål, Norwegian; Norwegian Bokmål
-    20		  59	    83%    	ru      	ru	Russian
-    21		  59	    83%    	sl      	sl	Slovenian
-    22		  59	    83%    	tr      	tr	Turkish
-    23		  58	    81%    	ru_RU   	ru	Russian @ Russian Federation
+     8		  71	   100%    	pt      	pt	Portuguese
+     9		  71	   100%    	pt_BR   	pt	Portuguese @ Brazil
+    10		  71	   100%    	sq      	sq	Albanian
+    11		  71	   100%    	sv      	sv	Swedish
+    12		  70	    98%    	ru_RU   	ru	Russian @ Russian Federation
+    13		  68	    95%    	nl      	nl	Dutch; Flemish
+    14		  59	    83%    	el      	el	Greek, Modern (1453-)
+    15		  59	    83%    	fi      	fi	Finnish
+    16		  59	    83%    	gl_ES   	gl	Galician @ Spain
+    17		  59	    83%    	hu      	hu	Hungarian
+    18		  59	    83%    	it      	it	Italian
+    19		  59	    83%    	ja      	ja	Japanese
+    20		  59	    83%    	nb      	nb	Bokmål, Norwegian; Norwegian Bokmål
+    21		  59	    83%    	ru      	ru	Russian
+    22		  59	    83%    	sl      	sl	Slovenian
+    23		  59	    83%    	tr      	tr	Turkish
     24		  58	    81%    	zh_CN   	zh	Chinese @ China
     25		  51	    71%    	nl_BE   	nl	Dutch; Flemish @ Belgium
