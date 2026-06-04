@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-13 00:42+0200\n"
+"POT-Creation-Date: 2026-05-30 00:05+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
 "Last-Translator: Manuel <senpai99@hotmail.com>, 2026\n"
 "Language-Team: Spanish (Spain) (https://app.transifex.com/anticapitalista/teams/10162/es_ES/)\n"
@@ -186,6 +186,46 @@ msgid "Installing selected packages, please authenticate"
 msgstr "Instalando paquetes seleccionados, por favor autentifiquese"
 
 #. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr "La caché de paquetes está vacía."
+
+#. TRANSLATORS:
+#. %d is the number of days since the package cache was last refreshed.
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] "La caché de paquetes lleva %d día sin actualizarse."
+msgstr[1] "La caché de paquetes lleva %d días sin actualizarse."
+msgstr[2] "La caché de paquetes lleva %d días sin actualizarse."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to run apt update now.
+msgid "Update now?"
+msgstr "¿Actualizar Ahora?"
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
+"No se ha podido actualizar la caché de paquetes. Compruebe su conexión a "
+"Internet o las listas de fuentes APT."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to continue despite apt update failure.
+msgid "Continue anyway?"
+msgstr "¿Continuar de todos modos?"
+
+#. TRANSLATORS:
 #. Title of a warning dialog shown when the local package database (package
 #. cache) is empty or outdated.
 #. The package cache is refreshed by running 'apt update'.
@@ -215,25 +255,6 @@ msgstr "¿Ejecutar APT_UPDATE ahora para actualizar la caché de paquetes?"
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
-msgid "The package cache is empty."
-msgstr "La caché de paquetes está vacía."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
-#. There may be more than one sentence that needs to be translated.
-#. If so, click the tabs with "1" ... "other" to translate them.
-#. Do keep the count placeholder "%d" -- it will be replaced by the number of
-#. days.
-msgid "The package cache has not been refreshed for %d day."
-msgid_plural "The package cache has not been refreshed for %d days."
-msgstr[0] "La caché de paquetes lleva %d día sin actualizarse."
-msgstr[1] "La caché de paquetes lleva %d días sin actualizarse."
-msgstr[2] "La caché de paquetes lleva %d días sin actualizarse."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
 msgid "The package cache may be outdated."
 msgstr "Es posible que la caché de paquetes esté desactualizada."
 
@@ -248,15 +269,6 @@ msgstr "Actualización de la caché de paquetes; por favor, autentifiquese"
 #. The user presses Enter to close the terminal and return to the app.
 msgid "Press Enter to continue"
 msgstr "Pulse Enter para continuar"
-
-#. TRANSLATORS:
-#. Shown after 'apt update' fails (e.g. no internet connection).
-msgid ""
-"Package cache update failed. Check your internet connection or APT sources "
-"lists."
-msgstr ""
-"No se ha podido actualizar la caché de paquetes. Compruebe su conexión a "
-"Internet o las listas de fuentes APT."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -338,6 +350,67 @@ msgstr "El archivo no contiene nombres de paquetes"
 
 msgid "Select a file"
 msgstr "Seleccionar un archivo"
+
+#. TRANSLATORS: %s is the directory path.
+msgid "Output directory does not exist: %s"
+msgstr "El directorio de salida no existe: %s"
+
+#. TRANSLATORS: %s is the file path.
+msgid "File already exists, will not overwrite: %s"
+msgstr "El archivo ya existe, no se sobrescribirá: %s"
+
+#. TRANSLATORS: %d is the number of packages saved.
+msgid "Saved %d package to:"
+msgid_plural "Saved %d packages to:"
+msgstr[0] "Paquete %d guardado en:"
+msgstr[1] "Paquetes %d guardados en:"
+msgstr[2] "Paquetes %d guardados en:"
+
+#. TRANSLATORS:
+#. The specified file does not exist. %s is the file path.
+msgid "File not found"
+msgstr "Archivo no encontrado"
+
+msgid "Usage:"
+msgstr "Uso:"
+
+#. TRANSLATORS: %s is the file path.
+msgid "No packages found in: %s"
+msgstr "No se encontraron paquetes en: %s"
+
+#. TRANSLATORS: %d is the number of packages being checked.
+msgid "Checking availability of %d package..."
+msgid_plural "Checking availability of %d packages..."
+msgstr[0] "Comprobando la disponibilidad de %d paquete..."
+msgstr[1] "Comprobando la disponibilidad de %d paquetes..."
+msgstr[2] "Comprobando la disponibilidad de %d paquetes..."
+
+#. TRANSLATORS: %d is the number of unavailable packages.
+msgid "%d package not available:"
+msgid_plural "%d packages not available:"
+msgstr[0] "%d paquete no disponible:"
+msgstr[1] "%d paquetes no disponibles:"
+msgstr[2] "%d paquetes no disponibles:"
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to save the list of unavailable packages to a
+#. file.
+msgid "Save missing packages list?"
+msgstr "¿Quiere guardar la lista de paquetes que faltan?"
+
+#. TRANSLATORS: %s is the file path.
+msgid "Missing packages list saved to: %s"
+msgstr "Lista de paquetes que faltan guardada en: %s"
+
+msgid "No packages available to install."
+msgstr "No hay paquetes disponibles para instalar."
+
+#. TRANSLATORS: %d is the number of packages being installed.
+msgid "Installing %d package..."
+msgid_plural "Installing %d packages..."
+msgstr[0] "Instalando %d paquete..."
+msgstr[1] "Instalando %d paquetes..."
+msgstr[2] "Instalando %d paquetes..."
 
 #. TRANSLATORS:
 #. The desktop entry comment will be shown within the menu.

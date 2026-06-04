@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-13 00:42+0200\n"
+"POT-Creation-Date: 2026-05-30 00:05+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>, 2026\n"
 "Language-Team: Albanian (https://app.transifex.com/anticapitalista/teams/10162/sq/)\n"
@@ -183,6 +183,45 @@ msgid "Installing selected packages, please authenticate"
 msgstr "Po instalohen paketat e përzgjedhura, ju lutemi, bëni mirëfilltësimin"
 
 #. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr "Fshehtina e paketave është e zbrazët."
+
+#. TRANSLATORS:
+#. %d is the number of days since the package cache was last refreshed.
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] "Fshehtina e paketave s’është rifreskuar për %d ditë."
+msgstr[1] "Fshehtina e paketave s’është rifreskuar për %d ditë."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to run apt update now.
+msgid "Update now?"
+msgstr "Të përditësohet tani?"
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
+"Përditësimi i fshehtinës së paketave dështoi. Kontrolloni lidhjen tuaj në "
+"internet, ose lista burimesh APTs."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to continue despite apt update failure.
+msgid "Continue anyway?"
+msgstr "Të vazhdohet sido qoftë?"
+
+#. TRANSLATORS:
 #. Title of a warning dialog shown when the local package database (package
 #. cache) is empty or outdated.
 #. The package cache is refreshed by running 'apt update'.
@@ -213,24 +252,6 @@ msgstr ""
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
-msgid "The package cache is empty."
-msgstr "Fshehtina e paketave është e zbrazët."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
-#. There may be more than one sentence that needs to be translated.
-#. If so, click the tabs with "1" ... "other" to translate them.
-#. Do keep the count placeholder "%d" -- it will be replaced by the number of
-#. days.
-msgid "The package cache has not been refreshed for %d day."
-msgid_plural "The package cache has not been refreshed for %d days."
-msgstr[0] "Fshehtina e paketave s’është rifreskuar për %d ditë."
-msgstr[1] "Fshehtina e paketave s’është rifreskuar për %d ditë."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
 msgid "The package cache may be outdated."
 msgstr "Fshehtina e paketave mund të jetë e papërditësuar."
 
@@ -245,15 +266,6 @@ msgstr "Po përditësohet fshetinë paketash, ju lutemi, bëni mirëfilltësimin
 #. The user presses Enter to close the terminal and return to the app.
 msgid "Press Enter to continue"
 msgstr "Që të vazhdohet, shtypni tastin Enter"
-
-#. TRANSLATORS:
-#. Shown after 'apt update' fails (e.g. no internet connection).
-msgid ""
-"Package cache update failed. Check your internet connection or APT sources "
-"lists."
-msgstr ""
-"Përditësimi i fshehtinës së paketave dështoi. Kontrolloni lidhjen tuaj në "
-"internet, ose lista burimesh APTs."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -335,6 +347,63 @@ msgstr "Kartela s’përmban emra paketash"
 
 msgid "Select a file"
 msgstr "Përzgjidhni një kartelë"
+
+#. TRANSLATORS: %s is the directory path.
+msgid "Output directory does not exist: %s"
+msgstr "Drejtoria përfundim s’ekziston: %s"
+
+#. TRANSLATORS: %s is the file path.
+msgid "File already exists, will not overwrite: %s"
+msgstr "Kartela ekziston tashmë, s’do të mbishkruhet: %s"
+
+#. TRANSLATORS: %d is the number of packages saved.
+msgid "Saved %d package to:"
+msgid_plural "Saved %d packages to:"
+msgstr[0] "U ruajt %d paketë te:"
+msgstr[1] "U ruajtën %d paketa te:"
+
+#. TRANSLATORS:
+#. The specified file does not exist. %s is the file path.
+msgid "File not found"
+msgstr "Kartela s’u gjet"
+
+msgid "Usage:"
+msgstr "Përdorim:"
+
+#. TRANSLATORS: %s is the file path.
+msgid "No packages found in: %s"
+msgstr "S’u gjetën paketa te: %s"
+
+#. TRANSLATORS: %d is the number of packages being checked.
+msgid "Checking availability of %d package..."
+msgid_plural "Checking availability of %d packages..."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS: %d is the number of unavailable packages.
+msgid "%d package not available:"
+msgid_plural "%d packages not available:"
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to save the list of unavailable packages to a
+#. file.
+msgid "Save missing packages list?"
+msgstr "Të ruhet lista e paketave që mungojnë?"
+
+#. TRANSLATORS: %s is the file path.
+msgid "Missing packages list saved to: %s"
+msgstr "Lista e paketave që mungojnë u ruajt te: %s"
+
+msgid "No packages available to install."
+msgstr "S’ka paketa gati për instalim."
+
+#. TRANSLATORS: %d is the number of packages being installed.
+msgid "Installing %d package..."
+msgid_plural "Installing %d packages..."
+msgstr[0] "Po instalohet %d paketë…"
+msgstr[1] "Po instalohen %d paketa…"
 
 #. TRANSLATORS:
 #. The desktop entry comment will be shown within the menu.

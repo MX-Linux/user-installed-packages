@@ -112,6 +112,10 @@ unset _args _i
 
 $_UIP_FORCE_CLI && UIP_GUI=false
 
+# If launched from / (desktop entry with no Path= set), fall back to home.
+# Skip in CLI mode - a script or cron job running from / may be intentional.
+[ "$PWD" = "/" ] && $UIP_GUI && cd "$HOME" 2>/dev/null || true
+
 export INSTALLED_PACKAGES="/usr/share/antiX/installed-packages.txt"
 if [ ! -f $INSTALLED_PACKAGES ]; then
     echo "[WARN]: File not found '$INSTALLED_PACKAGES'"
@@ -650,14 +654,20 @@ export -f uip_load
 
 
 uip_confirm() {
-    local question="$1"
-    local yesstr nostr yesexpr
-    yesstr=$(locale yesstr 2>/dev/null); yesstr="${yesstr:-yes}"
-    nostr=$(locale nostr   2>/dev/null); nostr="${nostr:-no}"
-    yesexpr=$(locale yesexpr 2>/dev/null); yesexpr="${yesexpr:-^[yY]}"
-    local ychar nchar
-    ychar=$(printf '%s' "${yesstr:0:1}" | tr '[:lower:]' '[:upper:]')
-    nchar=$(printf '%s' "${nostr:0:1}"  | tr '[:upper:]' '[:lower:]')
+    local question="$1" question_en="${2:-}"
+    local yesstr nostr yesexpr ychar nchar
+    # If English original provided and matches translated string, the string is not yet
+    # translated - show English [Y/n] with English yesexpr to avoid a mismatch where
+    # the question is in English but the prompt chars are localised.
+    if [ -n "$question_en" ] && [ "$question" = "$question_en" ]; then
+        ychar="Y"; nchar="n"; yesexpr="^[+1yY]"
+    else
+        yesstr=$(locale yesstr 2>/dev/null); yesstr="${yesstr:-yes}"
+        nostr=$(locale nostr   2>/dev/null); nostr="${nostr:-no}"
+        yesexpr=$(locale yesexpr 2>/dev/null); yesexpr="${yesexpr:-^[yY]}"
+        ychar="${yesstr:0:1}"; ychar="${ychar^}"
+        nchar="${nostr:0:1}";  nchar="${nchar,}"
+    fi
     local reply
     printf '%s [%s/%s] ' "$question" "$ychar" "$nchar" >&2
     read -r reply
@@ -716,7 +726,7 @@ uip_check_apt_cache() {
         local reply
         # TRANSLATORS:
         # CLI prompt asking whether to run apt update now.
-        uip_confirm "$(gettext 'Update now?')" || return 0
+        uip_confirm "$(gettext 'Update now?')" "Update now?" || return 0
 
         local uip_apt_update="/usr/libexec/user-installed-packages/uip-apt-update"
         [ -x "${UIP_SCRIPT_DIR}/uip-apt-update" ] && uip_apt_update="${UIP_SCRIPT_DIR}/uip-apt-update"
@@ -748,7 +758,7 @@ uip_check_apt_cache() {
             echo "$(gettext 'Package cache update failed. Check your internet connection or APT sources lists.')" >&2
             # TRANSLATORS:
             # CLI prompt asking whether to continue despite apt update failure.
-            uip_confirm "$(gettext 'Continue anyway?')" && return 0
+            uip_confirm "$(gettext 'Continue anyway?')" "Continue anyway?" && return 0
             return 1
         fi
         return 0
@@ -1494,7 +1504,7 @@ cli_install() {
 
         # TRANSLATORS:
         # CLI prompt asking whether to save the list of unavailable packages to a file.
-        if uip_confirm "$(gettext 'Save missing packages list?')"; then
+        if uip_confirm "$(gettext 'Save missing packages list?')" "Save missing packages list?"; then
                 local outdir="${opt_outdir:-$(dirname "$infile")}"
                 local missing_file="$outdir/uip-missing-$(date +%Y.%m.%d_%H%M%S).txt"
                 if [ ! -e "$missing_file" ]; then

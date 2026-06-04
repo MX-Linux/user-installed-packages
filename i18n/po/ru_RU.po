@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-13 00:42+0200\n"
+"POT-Creation-Date: 2026-05-30 00:05+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
 "Last-Translator: Andrei Stepanov, 2026\n"
 "Language-Team: Russian (Russia) (https://app.transifex.com/anticapitalista/teams/10162/ru_RU/)\n"
@@ -187,6 +187,47 @@ msgid "Installing selected packages, please authenticate"
 msgstr "Установка выбранных пакетов, пройдите аутентификацию"
 
 #. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr "Кэш пакетов пуст."
+
+#. TRANSLATORS:
+#. %d is the number of days since the package cache was last refreshed.
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] "Кэш пакетов не обновлялся в течение %d дня."
+msgstr[1] "Кэш пакетов не обновлялся в течение %d дней."
+msgstr[2] "Кэш пакетов не обновлялся в течение %d дней."
+msgstr[3] "Кэш пакетов не обновлялся в течение %d дней."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to run apt update now.
+msgid "Update now?"
+msgstr "Обновить сейчас?"
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
+"Не удалось обновить кэш пакетов. Проверьте своё подключение к Интернету или "
+"список источников APT."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to continue despite apt update failure.
+msgid "Continue anyway?"
+msgstr "Продолжить всё равно?"
+
+#. TRANSLATORS:
 #. Title of a warning dialog shown when the local package database (package
 #. cache) is empty or outdated.
 #. The package cache is refreshed by running 'apt update'.
@@ -216,26 +257,6 @@ msgstr "Запустите APT_UPDATE сейчас, чтобы обновить 
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
-msgid "The package cache is empty."
-msgstr "Кэш пакетов пуст."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
-#. There may be more than one sentence that needs to be translated.
-#. If so, click the tabs with "1" ... "other" to translate them.
-#. Do keep the count placeholder "%d" -- it will be replaced by the number of
-#. days.
-msgid "The package cache has not been refreshed for %d day."
-msgid_plural "The package cache has not been refreshed for %d days."
-msgstr[0] "Кэш пакетов не обновлялся в течение %d дня."
-msgstr[1] "Кэш пакетов не обновлялся в течение %d дней."
-msgstr[2] "Кэш пакетов не обновлялся в течение %d дней."
-msgstr[3] "Кэш пакетов не обновлялся в течение %d дней."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
 msgid "The package cache may be outdated."
 msgstr "Возможно, кэш пакетов устарел."
 
@@ -250,15 +271,6 @@ msgstr "Обновляется кэш пакетов, пожалуйста, пр
 #. The user presses Enter to close the terminal and return to the app.
 msgid "Press Enter to continue"
 msgstr "Нажмите Enter, чтобы продолжить"
-
-#. TRANSLATORS:
-#. Shown after 'apt update' fails (e.g. no internet connection).
-msgid ""
-"Package cache update failed. Check your internet connection or APT sources "
-"lists."
-msgstr ""
-"Не удалось обновить кэш пакетов. Проверьте своё подключение к Интернету или "
-"список источников APT."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -340,6 +352,71 @@ msgstr "Файл не содержит имен пакетов"
 
 msgid "Select a file"
 msgstr "Выберите файл"
+
+#. TRANSLATORS: %s is the directory path.
+msgid "Output directory does not exist: %s"
+msgstr "Выходной каталог не существует: %s"
+
+#. TRANSLATORS: %s is the file path.
+msgid "File already exists, will not overwrite: %s"
+msgstr "Файл уже существует, перезаписи не будет: %s"
+
+#. TRANSLATORS: %d is the number of packages saved.
+msgid "Saved %d package to:"
+msgid_plural "Saved %d packages to:"
+msgstr[0] "%d пакет сохранён в:"
+msgstr[1] "%d пакета сохранено в:"
+msgstr[2] "%d пакетов сохранено в:"
+msgstr[3] "%d пакетов сохранено в:"
+
+#. TRANSLATORS:
+#. The specified file does not exist. %s is the file path.
+msgid "File not found"
+msgstr "Файл не найден"
+
+msgid "Usage:"
+msgstr "Использование:"
+
+#. TRANSLATORS: %s is the file path.
+msgid "No packages found in: %s"
+msgstr "Пакеты не найдены в: %s"
+
+#. TRANSLATORS: %d is the number of packages being checked.
+msgid "Checking availability of %d package..."
+msgid_plural "Checking availability of %d packages..."
+msgstr[0] "Проверяется доступность %d пакета…"
+msgstr[1] "Проверяется доступность %d пакетов…"
+msgstr[2] "Проверяется доступность %d пакетов…"
+msgstr[3] "Проверяется доступность %d пакетов…"
+
+#. TRANSLATORS: %d is the number of unavailable packages.
+msgid "%d package not available:"
+msgid_plural "%d packages not available:"
+msgstr[0] "%d пакет не доступен:"
+msgstr[1] "%d пакета не доступно:"
+msgstr[2] "%d пакетов не доступно:"
+msgstr[3] "%d пакетов не доступно:"
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to save the list of unavailable packages to a
+#. file.
+msgid "Save missing packages list?"
+msgstr "Сохранить список отсутствующих пакетов?"
+
+#. TRANSLATORS: %s is the file path.
+msgid "Missing packages list saved to: %s"
+msgstr "Список отсутствующих пакетов сохранён в: %s"
+
+msgid "No packages available to install."
+msgstr "Нет доступных для установки пакетов."
+
+#. TRANSLATORS: %d is the number of packages being installed.
+msgid "Installing %d package..."
+msgid_plural "Installing %d packages..."
+msgstr[0] "Устанавливается %d пакет…"
+msgstr[1] "Устанавливаются %d пакета…"
+msgstr[2] "Устанавливается %d пакетов…"
+msgstr[3] "Устанавливается %d пакетов…"
 
 #. TRANSLATORS:
 #. The desktop entry comment will be shown within the menu.

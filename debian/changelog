@@ -1,3 +1,14 @@
+user-installed-packages (26.06.1) mx; urgency=medium
+
+  * Fix bash completion partial filename cycling (compgen -G -> compgen -f)
+  * Fix bash completion: one-tab directory lookahead for uip-list-*.txt files
+  * Fix working directory: cd to home when launched from / (desktop entries)
+  * Fix uip_confirm: use bash string operators instead of tr for UTF-8 locale chars
+  * Fix uip_confirm: show English [Y/n] when question string is not yet translated
+  * Translations refresh
+
+ -- fehlix <fehlix@mxlinux.org>  Thu, 04 Jun 2026 15:04:42 -0400
+
 user-installed-packages (26.05.3) mx; urgency=medium
 
   * Fix changelog display crash on newer yad 14.x (write to tempfile, use --filename)
