@@ -7,15 +7,16 @@
 # anticapitalista <anticapitalista@riseup.net>, 2023
 # Davidmp <medipas@gmail.com>, 2026
 # Eduard Selma <eduard@selma.cat>, 2026
+# fehlix, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-30 00:05+0200\n"
+"POT-Creation-Date: 2026-06-05 02:57+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: Eduard Selma <eduard@selma.cat>, 2026\n"
+"Last-Translator: fehlix, 2026\n"
 "Language-Team: Catalan (https://app.transifex.com/anticapitalista/teams/10162/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -281,7 +282,7 @@ msgstr "El fitxer ja hi és. El voleu sobreescriure? "
 #. UIP = "User Installed Packages".
 #. The list of user installed packages (UIP) was saved successfully under:
 msgid "[OK] UIP list saved:"
-msgstr "[]D'acord] Llista UIP desada:"
+msgstr "[D'acord] Llista UIP desada:"
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -349,6 +350,50 @@ msgstr "El fitxer no conté noms de paquet"
 msgid "Select a file"
 msgstr "Trieu un fitxer"
 
+msgid "Usage:"
+msgstr "Ús:"
+
+#. TRANSLATORS: 'command' is a syntax placeholder meaning "one of the commands
+#. listed below"
+msgid "command"
+msgstr "ordre"
+
+#. TRANSLATORS: '[options]' is a syntax placeholder meaning optional flags;
+#. keep the square brackets
+msgid "[options]"
+msgstr "[opcions]"
+
+#. TRANSLATORS: Section header for the list of available commands
+msgid "Commands:"
+msgstr "Ordres: "
+
+#. TRANSLATORS: CLI (command line interface) mode means the program runs in
+#. the terminal without a graphical window; --cli is the literal flag name, do
+#. not translate it
+msgid "Force CLI mode"
+msgstr "Força el mode de línia d'ordres"
+
+msgid "Show this help"
+msgstr "Mostra l'ajuda"
+
+msgid "Show version"
+msgstr "Mostra la versió"
+
+#. TRANSLATORS: Section header for the list of available options/flags
+msgid "Options:"
+msgstr "Opcions:"
+
+#. TRANSLATORS: --generate and --install are literal flag names, do not
+#. translate them; a single dash (-) means write to standard output instead of
+#. a file
+msgid "File to write (--generate) or read (--install); use - for stdout"
+msgstr ""
+"Fitxer a escriure (--generate) o llegir (--install); useu - per stdout"
+
+#. TRANSLATORS: "current dir" means the folder the program was launched from
+msgid "Output directory for saved files (default: current dir)"
+msgstr "Directori de sortida pels fitxers desats (per omissió: dir. actual)"
+
 #. TRANSLATORS: %s is the directory path.
 msgid "Output directory does not exist: %s"
 msgstr "No existeix el directori de sortida: %s"
@@ -367,9 +412,6 @@ msgstr[1] "S'han desat %dpaquets a:"
 #. The specified file does not exist. %s is the file path.
 msgid "File not found"
 msgstr "No trobo el fitxer"
-
-msgid "Usage:"
-msgstr "Ús:"
 
 #. TRANSLATORS: %s is the file path.
 msgid "No packages found in: %s"

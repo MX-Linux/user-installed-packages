@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-30 00:05+0200\n"
+"POT-Creation-Date: 2026-06-05 02:57+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
 "Last-Translator: Wallon Wallon, 2026\n"
 "Language-Team: French (https://app.transifex.com/anticapitalista/teams/10162/fr/)\n"
@@ -360,6 +360,49 @@ msgstr "Le fichier ne contient pas de noms de paquets"
 msgid "Select a file"
 msgstr "Choisir un fichier"
 
+msgid "Usage:"
+msgstr "Utilisation :"
+
+#. TRANSLATORS: 'command' is a syntax placeholder meaning "one of the commands
+#. listed below"
+msgid "command"
+msgstr ""
+
+#. TRANSLATORS: '[options]' is a syntax placeholder meaning optional flags;
+#. keep the square brackets
+msgid "[options]"
+msgstr ""
+
+#. TRANSLATORS: Section header for the list of available commands
+msgid "Commands:"
+msgstr ""
+
+#. TRANSLATORS: CLI (command line interface) mode means the program runs in
+#. the terminal without a graphical window; --cli is the literal flag name, do
+#. not translate it
+msgid "Force CLI mode"
+msgstr "Forcer le mode CLI"
+
+msgid "Show this help"
+msgstr ""
+
+msgid "Show version"
+msgstr ""
+
+#. TRANSLATORS: Section header for the list of available options/flags
+msgid "Options:"
+msgstr "Options :"
+
+#. TRANSLATORS: --generate and --install are literal flag names, do not
+#. translate them; a single dash (-) means write to standard output instead of
+#. a file
+msgid "File to write (--generate) or read (--install); use - for stdout"
+msgstr ""
+
+#. TRANSLATORS: "current dir" means the folder the program was launched from
+msgid "Output directory for saved files (default: current dir)"
+msgstr ""
+
 #. TRANSLATORS: %s is the directory path.
 msgid "Output directory does not exist: %s"
 msgstr ""
@@ -379,9 +422,6 @@ msgstr[2] ""
 #. The specified file does not exist. %s is the file path.
 msgid "File not found"
 msgstr "Fichier introuvable"
-
-msgid "Usage:"
-msgstr "Utilisation :"
 
 #. TRANSLATORS: %s is the file path.
 msgid "No packages found in: %s"

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-30 00:05+0200\n"
+"POT-Creation-Date: 2026-06-05 02:57+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
 "Last-Translator: Vanhoorne Michael, 2026\n"
 "Language-Team: Dutch (Belgium) (https://app.transifex.com/anticapitalista/teams/10162/nl_BE/)\n"
@@ -350,6 +350,49 @@ msgstr "Bestand bevat geen pakketnamen"
 msgid "Select a file"
 msgstr "Selecteer een bestand"
 
+msgid "Usage:"
+msgstr ""
+
+#. TRANSLATORS: 'command' is a syntax placeholder meaning "one of the commands
+#. listed below"
+msgid "command"
+msgstr ""
+
+#. TRANSLATORS: '[options]' is a syntax placeholder meaning optional flags;
+#. keep the square brackets
+msgid "[options]"
+msgstr ""
+
+#. TRANSLATORS: Section header for the list of available commands
+msgid "Commands:"
+msgstr ""
+
+#. TRANSLATORS: CLI (command line interface) mode means the program runs in
+#. the terminal without a graphical window; --cli is the literal flag name, do
+#. not translate it
+msgid "Force CLI mode"
+msgstr ""
+
+msgid "Show this help"
+msgstr ""
+
+msgid "Show version"
+msgstr ""
+
+#. TRANSLATORS: Section header for the list of available options/flags
+msgid "Options:"
+msgstr "Opties:"
+
+#. TRANSLATORS: --generate and --install are literal flag names, do not
+#. translate them; a single dash (-) means write to standard output instead of
+#. a file
+msgid "File to write (--generate) or read (--install); use - for stdout"
+msgstr ""
+
+#. TRANSLATORS: "current dir" means the folder the program was launched from
+msgid "Output directory for saved files (default: current dir)"
+msgstr ""
+
 #. TRANSLATORS: %s is the directory path.
 msgid "Output directory does not exist: %s"
 msgstr ""
@@ -367,9 +410,6 @@ msgstr[1] ""
 #. TRANSLATORS:
 #. The specified file does not exist. %s is the file path.
 msgid "File not found"
-msgstr ""
-
-msgid "Usage:"
 msgstr ""
 
 #. TRANSLATORS: %s is the file path.
