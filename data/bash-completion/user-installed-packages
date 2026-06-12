@@ -13,14 +13,34 @@ _user_installed_packages() {
 
     case "$prev" in
         -f|--file)
-            # --install: prefer uip-list-*.txt; fall back to all files
-            # --generate: any file, or - for stdout
             if [[ " ${words[*]} " =~ " -i " || " ${words[*]} " =~ " --install " ]]; then
-                COMPREPLY=($(compgen -G "uip-list-*.txt" -- "$cur"))
-            fi
-            if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
-                COMPREPLY+=($(compgen -W "-" -- "$cur"))
-                _filedir
+                if [[ -z "$cur" ]]; then
+                    # nothing typed: suggest uip-list-*.txt in cwd; fall back to all
+                    COMPREPLY=($(compgen -f -X '!uip-list-*.txt' -- ""))
+                    [[ ${#COMPREPLY[@]} -eq 0 ]] && COMPREPLY=($(compgen -f -- ""))
+                elif [[ "$cur" == */ || -d "$cur" ]]; then
+                    # directory typed: suggest uip-list-*.txt inside it; fall back to all
+                    local dir="${cur%/}/"
+                    COMPREPLY=($(compgen -f -- "${dir}uip-list-"))
+                    [[ ${#COMPREPLY[@]} -eq 0 ]] && COMPREPLY=($(compgen -f -- "$cur"))
+                else
+                    # partial filename: complete anything matching
+                    COMPREPLY=($(compgen -f -- "$cur"))
+                    # single directory match: look inside for uip-list-* immediately (saves one Tab)
+                    if [[ ${#COMPREPLY[@]} -eq 1 && -d "${COMPREPLY[0]}" ]]; then
+                        local dir="${COMPREPLY[0]%/}/"
+                        local inner=($(compgen -f -- "${dir}uip-list-"))
+                        if [[ ${#inner[@]} -gt 0 ]]; then
+                            COMPREPLY=("${inner[@]}")
+                        else
+                            COMPREPLY=("$dir")
+                        fi
+                    fi
+                fi
+            else
+                # --generate: any file, or - for stdout
+                COMPREPLY=($(compgen -W "-" -- "$cur"))
+                COMPREPLY+=($(compgen -f -- "$cur"))
             fi
             return ;;
         -o|--output)
@@ -31,5 +51,5 @@ _user_installed_packages() {
     COMPREPLY=($(compgen -W "$all_opts" -- "$cur"))
 }
 
-complete -F _user_installed_packages user-installed-packages
-complete -F _user_installed_packages uip
+complete -o filenames -F _user_installed_packages user-installed-packages
+complete -o filenames -F _user_installed_packages uip

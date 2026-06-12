@@ -7,17 +7,17 @@
 # anticapitalista <anticapitalista@riseup.net>, 2023
 # marcelo cripe <marcelocripe@gmail.com>, 2023
 # Hugo Carvalho <hugokarvalho@hotmail.com>, 2023
-# José Vieira <jvieira33@sapo.pt>, 2026
 # Paulo C., 2026
+# José Vieira <jvieira33@sapo.pt>, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: user-installed-packages\n"
 "Report-Msgid-Bugs-To: https://forum.mxlinux.org/viewforum.php?f=96\n"
-"POT-Creation-Date: 2026-05-13 00:42+0200\n"
+"POT-Creation-Date: 2026-06-05 02:57+0200\n"
 "PO-Revision-Date: 2023-03-20 13:51+0000\n"
-"Last-Translator: Paulo C., 2026\n"
+"Last-Translator: José Vieira <jvieira33@sapo.pt>, 2026\n"
 "Language-Team: Portuguese (https://app.transifex.com/anticapitalista/teams/10162/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -188,6 +188,46 @@ msgid "Installing selected packages, please authenticate"
 msgstr "A instalar pacotes selecionados, por favor autentique-se"
 
 #. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+msgid "The package cache is empty."
+msgstr "A cache de pacotes está vazia."
+
+#. TRANSLATORS:
+#. %d is the number of days since the package cache was last refreshed.
+#. TRANSLATORS:
+#. The package cache is the local database of available software packages,
+#. refreshed by 'apt update'.
+#. There may be more than one sentence that needs to be translated.
+#. If so, click the tabs with "1" ... "other" to translate them.
+#. Do keep the count placeholder "%d" -- it will be replaced by the number of
+#. days.
+msgid "The package cache has not been refreshed for %d day."
+msgid_plural "The package cache has not been refreshed for %d days."
+msgstr[0] "A cache de pacotes não é actualizada há %d dia."
+msgstr[1] "A cache de pacotes não é actualizada há %d dias."
+msgstr[2] "A cache de pacotes não é actualizada há %d dias."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to run apt update now.
+msgid "Update now?"
+msgstr ""
+
+#. TRANSLATORS:
+#. Shown after 'apt update' fails (e.g. no internet connection).
+msgid ""
+"Package cache update failed. Check your internet connection or APT sources "
+"lists."
+msgstr ""
+"Erro ao atualizar cache dos pacotes. Verifique a ligação à internet ou a sua"
+" fonte de repositórios."
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to continue despite apt update failure.
+msgid "Continue anyway?"
+msgstr "Continuar mesmo assim?"
+
+#. TRANSLATORS:
 #. Title of a warning dialog shown when the local package database (package
 #. cache) is empty or outdated.
 #. The package cache is refreshed by running 'apt update'.
@@ -217,25 +257,6 @@ msgstr "Executar agora APT_UPDATE para actualizar a cache de pacotes?"
 #. TRANSLATORS:
 #. The package cache is the local database of available software packages,
 #. refreshed by 'apt update'.
-msgid "The package cache is empty."
-msgstr "A cache de pacotes está vazia."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
-#. There may be more than one sentence that needs to be translated.
-#. If so, click the tabs with "1" ... "other" to translate them.
-#. Do keep the count placeholder "%d" -- it will be replaced by the number of
-#. days.
-msgid "The package cache has not been refreshed for %d day."
-msgid_plural "The package cache has not been refreshed for %d days."
-msgstr[0] "A cache de pacotes não é actualizada há %d dia."
-msgstr[1] "A cache de pacotes não é actualizada há %d dias."
-msgstr[2] "A cache de pacotes não é actualizada há %d dias."
-
-#. TRANSLATORS:
-#. The package cache is the local database of available software packages,
-#. refreshed by 'apt update'.
 msgid "The package cache may be outdated."
 msgstr "A cache de pacotes pode estar desactualizada."
 
@@ -250,15 +271,6 @@ msgstr "Actualizar a cache de pacotes. Necessária autenticação."
 #. The user presses Enter to close the terminal and return to the app.
 msgid "Press Enter to continue"
 msgstr "Premir Introduzir/Enter para continuar"
-
-#. TRANSLATORS:
-#. Shown after 'apt update' fails (e.g. no internet connection).
-msgid ""
-"Package cache update failed. Check your internet connection or APT sources "
-"lists."
-msgstr ""
-"Erro ao atualizar cache dos pacotes. Verifique a ligação à internet ou a sua"
-" fonte de repositórios."
 
 #. TRANSLATORS:
 #. UIP = "User Installed Packages".
@@ -340,6 +352,107 @@ msgstr "O ficheiro não contem nomes de pacotes"
 
 msgid "Select a file"
 msgstr "Escolha um ficheiro"
+
+msgid "Usage:"
+msgstr "Utilização:"
+
+#. TRANSLATORS: 'command' is a syntax placeholder meaning "one of the commands
+#. listed below"
+msgid "command"
+msgstr ""
+
+#. TRANSLATORS: '[options]' is a syntax placeholder meaning optional flags;
+#. keep the square brackets
+msgid "[options]"
+msgstr ""
+
+#. TRANSLATORS: Section header for the list of available commands
+msgid "Commands:"
+msgstr ""
+
+#. TRANSLATORS: CLI (command line interface) mode means the program runs in
+#. the terminal without a graphical window; --cli is the literal flag name, do
+#. not translate it
+msgid "Force CLI mode"
+msgstr "Forçar o Modo por Linha de Comandos"
+
+msgid "Show this help"
+msgstr ""
+
+msgid "Show version"
+msgstr ""
+
+#. TRANSLATORS: Section header for the list of available options/flags
+msgid "Options:"
+msgstr "Opções: "
+
+#. TRANSLATORS: --generate and --install are literal flag names, do not
+#. translate them; a single dash (-) means write to standard output instead of
+#. a file
+msgid "File to write (--generate) or read (--install); use - for stdout"
+msgstr ""
+
+#. TRANSLATORS: "current dir" means the folder the program was launched from
+msgid "Output directory for saved files (default: current dir)"
+msgstr ""
+
+#. TRANSLATORS: %s is the directory path.
+msgid "Output directory does not exist: %s"
+msgstr ""
+
+#. TRANSLATORS: %s is the file path.
+msgid "File already exists, will not overwrite: %s"
+msgstr ""
+
+#. TRANSLATORS: %d is the number of packages saved.
+msgid "Saved %d package to:"
+msgid_plural "Saved %d packages to:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#. TRANSLATORS:
+#. The specified file does not exist. %s is the file path.
+msgid "File not found"
+msgstr "Ficheiro não encontrado"
+
+#. TRANSLATORS: %s is the file path.
+msgid "No packages found in: %s"
+msgstr ""
+
+#. TRANSLATORS: %d is the number of packages being checked.
+msgid "Checking availability of %d package..."
+msgid_plural "Checking availability of %d packages..."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#. TRANSLATORS: %d is the number of unavailable packages.
+msgid "%d package not available:"
+msgid_plural "%d packages not available:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#. TRANSLATORS:
+#. CLI prompt asking whether to save the list of unavailable packages to a
+#. file.
+msgid "Save missing packages list?"
+msgstr ""
+
+#. TRANSLATORS: %s is the file path.
+msgid "Missing packages list saved to: %s"
+msgstr ""
+
+msgid "No packages available to install."
+msgstr ""
+
+#. TRANSLATORS: %d is the number of packages being installed.
+msgid "Installing %d package..."
+msgid_plural "Installing %d packages..."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #. TRANSLATORS:
 #. The desktop entry comment will be shown within the menu.

@@ -22,16 +22,14 @@ export TEXTDOMAIN=${PACKAGE_NAME}
 #         &   ampersand       -- background / command separator
 #
 # Replaced chars (kept visible, made shell-safe):
-#   \x27  '   ASCII single quote  ->  \xe2\x80\x99  ’  right single curly quote (U+2019)
-#   \x22  "   ASCII double quote  ->  \xe2\x80\x9d  ”  right double curly quote (U+201D)
-#         ;   semicolon           ->  ,  comma
+#   \x27  '   ASCII single quote  ->  \xe2\x80\x99  '  right single curly quote (U+2019)
+#   \x22  "   ASCII double quote  ->  \xe2\x80\x9d  "  right double curly quote (U+201D)
 gettext() {
     local _s _rsq=$'\xe2\x80\x99' _rdq=$'\xe2\x80\x9d'
     _s=$(/usr/bin/gettext "$@")
     _s=${_s//[$'\x24\x60'|><&]/}
     _s=${_s//$'\x27'/$_rsq}
     _s=${_s//$'\x22'/$_rdq}
-    _s=${_s//;/,}
     printf '%s' "$_s"
 }
 ngettext() {
@@ -40,7 +38,6 @@ ngettext() {
     _s=${_s//[$'\x24\x60'|><&]/}
     _s=${_s//$'\x27'/$_rsq}
     _s=${_s//$'\x22'/$_rdq}
-    _s=${_s//;/,}
     printf '%s' "$_s"
 }
 export -f gettext
@@ -111,6 +108,10 @@ done
 unset _args _i
 
 $_UIP_FORCE_CLI && UIP_GUI=false
+
+# If launched from / (desktop entry with no Path= set), fall back to home.
+# Skip in CLI mode - a script or cron job running from / may be intentional.
+[ "$PWD" = "/" ] && $UIP_GUI && cd "$HOME" 2>/dev/null || true
 
 export INSTALLED_PACKAGES="/usr/share/antiX/installed-packages.txt"
 if [ ! -f $INSTALLED_PACKAGES ]; then
@@ -632,7 +633,7 @@ NotUsed
     else
         CMD+="sudo -k; sudo -v && sudo LANGUAGE=$LANGUAGE apt install --ignore-missing "
     fi
-    HLD="echo; echo $HOLDMESSAGE; read x"
+    HLD="echo; echo '$HOLDMESSAGE'; read x"
 
 
     #Install packages in separate terminal
@@ -650,14 +651,20 @@ export -f uip_load
 
 
 uip_confirm() {
-    local question="$1"
-    local yesstr nostr yesexpr
-    yesstr=$(locale yesstr 2>/dev/null); yesstr="${yesstr:-yes}"
-    nostr=$(locale nostr   2>/dev/null); nostr="${nostr:-no}"
-    yesexpr=$(locale yesexpr 2>/dev/null); yesexpr="${yesexpr:-^[yY]}"
-    local ychar nchar
-    ychar=$(printf '%s' "${yesstr:0:1}" | tr '[:lower:]' '[:upper:]')
-    nchar=$(printf '%s' "${nostr:0:1}"  | tr '[:upper:]' '[:lower:]')
+    local question="$1" question_en="${2:-}"
+    local yesstr nostr yesexpr ychar nchar
+    # If English original provided and matches translated string, the string is not yet
+    # translated - show English [Y/n] with English yesexpr to avoid a mismatch where
+    # the question is in English but the prompt chars are localised.
+    if [ -n "$question_en" ] && [ "$question" = "$question_en" ]; then
+        ychar="Y"; nchar="n"; yesexpr="^[+1yY]"
+    else
+        yesstr=$(locale yesstr 2>/dev/null); yesstr="${yesstr:-yes}"
+        nostr=$(locale nostr   2>/dev/null); nostr="${nostr:-no}"
+        yesexpr=$(locale yesexpr 2>/dev/null); yesexpr="${yesexpr:-^[yY]}"
+        ychar="${yesstr:0:1}"; ychar="${ychar^}"
+        nchar="${nostr:0:1}";  nchar="${nchar,}"
+    fi
     local reply
     printf '%s [%s/%s] ' "$question" "$ychar" "$nchar" >&2
     read -r reply
@@ -716,7 +723,7 @@ uip_check_apt_cache() {
         local reply
         # TRANSLATORS:
         # CLI prompt asking whether to run apt update now.
-        uip_confirm "$(gettext 'Update now?')" || return 0
+        uip_confirm "$(gettext 'Update now?')" "Update now?" || return 0
 
         local uip_apt_update="/usr/libexec/user-installed-packages/uip-apt-update"
         [ -x "${UIP_SCRIPT_DIR}/uip-apt-update" ] && uip_apt_update="${UIP_SCRIPT_DIR}/uip-apt-update"
@@ -748,7 +755,7 @@ uip_check_apt_cache() {
             echo "$(gettext 'Package cache update failed. Check your internet connection or APT sources lists.')" >&2
             # TRANSLATORS:
             # CLI prompt asking whether to continue despite apt update failure.
-            uip_confirm "$(gettext 'Continue anyway?')" && return 0
+            uip_confirm "$(gettext 'Continue anyway?')" "Continue anyway?" && return 0
             return 1
         fi
         return 0
@@ -893,10 +900,10 @@ uip_check_apt_cache() {
         TERMINAL_BASENAME=$(basename -s .wrapper "$(realpath "$(command -v x-terminal-emulator)")")
         case "$TERMINAL_BASENAME" in
             xfce4-terminal)
-                xfce4-terminal ${SESSION_MANAGER:+--disable-server} -x bash -c "trap 'touch $_sentinel' EXIT; echo $update_msg; $update_cmd; echo; echo $hold_msg; read x" &
+                xfce4-terminal ${SESSION_MANAGER:+--disable-server} -x bash -c "trap 'touch $_sentinel' EXIT; echo '$update_msg'; $update_cmd; echo; echo '$hold_msg'; read x" &
                 ;;
             *)
-                x-terminal-emulator -e bash -c "trap 'touch $_sentinel' EXIT; echo $update_msg; $update_cmd; echo; echo $hold_msg; read x" &
+                x-terminal-emulator -e bash -c "trap 'touch $_sentinel' EXIT; echo '$update_msg'; $update_cmd; echo; echo '$hold_msg'; read x" &
                 ;;
         esac
         # Wait for sentinel (touched by EXIT trap when terminal shell exits, max 5 min)
@@ -1114,8 +1121,8 @@ export -f uip_write_file
 uip_select_list_file() {
     local selected_file=""
     local uip_files
-    eval uip_files=($(find . -maxdepth 3 -type f -name 'uip-list*.txt' -printf "'%p'\n"))
-    (( ${#uip_files[@]} !=0 )) &&  selected_file=$(ls -1t "${uip_files[@]}" | head -1)
+    mapfile -d '' -t uip_files < <(find . -maxdepth 3 -type f -name 'uip-list*.txt' -print0 2>/dev/null)
+    (( ${#uip_files[@]} !=0 )) &&  selected_file=$(printf '%s\n' "${uip_files[@]}" | sort -r | head -1)
 
     # TRANSLATORS:
     # UIP = "User Installed Packages".
@@ -1314,18 +1321,38 @@ export -f uip_notify
 
 
 cli_usage() {
+    local _usage; _usage=$(gettext 'Usage:')
+    # TRANSLATORS: 'command' is a syntax placeholder meaning "one of the commands listed below"
+    local _cmd; _cmd=$(gettext 'command')
+    # TRANSLATORS: '[options]' is a syntax placeholder meaning optional flags; keep the square brackets
+    local _opts; _opts=$(gettext '[options]')
+    # TRANSLATORS: Section header for the list of available commands
+    local _cmds_hdr; _cmds_hdr=$(gettext 'Commands:')
+    local _gen_desc; _gen_desc=$(gettext 'Create a list of user installed packages')
+    local _inst_desc; _inst_desc=$(gettext 'Open a previously saved list and install selected packages')
+    # TRANSLATORS: CLI (command line interface) mode means the program runs in the terminal without a graphical window; --cli is the literal flag name, do not translate it
+    local _cli_desc; _cli_desc=$(gettext 'Force CLI mode')
+    local _help_desc; _help_desc=$(gettext 'Show this help')
+    local _ver_desc; _ver_desc=$(gettext 'Show version')
+    # TRANSLATORS: Section header for the list of available options/flags
+    local _opts_hdr; _opts_hdr=$(gettext 'Options:')
+    # TRANSLATORS: --generate and --install are literal flag names, do not translate them; a single dash (-) means write to standard output instead of a file
+    local _file_desc; _file_desc=$(gettext 'File to write (--generate) or read (--install); use - for stdout')
+    # TRANSLATORS: "current dir" means the folder the program was launched from
+    local _outdir_desc; _outdir_desc=$(gettext 'Output directory for saved files (default: current dir)')
     cat >&2 <<EOF
-Usage: $(basename "$0") COMMAND [OPTIONS]
+$_usage user-installed-packages $_cmd $_opts
 
-Commands:
-  -g, --generate    $(gettext 'Create a list of user installed packages')
-  -i, --install     $(gettext 'Open a previously saved list and install selected packages')
-  -c, --cli         Force CLI mode
-  -h, --help        Show this help
+$_cmds_hdr
+  -g, --generate    $_gen_desc
+  -i, --install     $_inst_desc
+  -c, --cli         $_cli_desc
+  -h, --help        $_help_desc
+  -v, --version     $_ver_desc
 
-Options:
-  -f, --file FILE   File to write (--generate) or read (--install); use - for stdout
-  -o, --output DIR  Output directory for saved files (default: current dir)
+$_opts_hdr
+  -f, --file FILE   $_file_desc
+  -o, --output DIR  $_outdir_desc
 EOF
 }
 
@@ -1494,7 +1521,7 @@ cli_install() {
 
         # TRANSLATORS:
         # CLI prompt asking whether to save the list of unavailable packages to a file.
-        if uip_confirm "$(gettext 'Save missing packages list?')"; then
+        if uip_confirm "$(gettext 'Save missing packages list?')" "Save missing packages list?"; then
                 local outdir="${opt_outdir:-$(dirname "$infile")}"
                 local missing_file="$outdir/uip-missing-$(date +%Y.%m.%d_%H%M%S).txt"
                 if [ ! -e "$missing_file" ]; then
