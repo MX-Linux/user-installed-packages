@@ -3,7 +3,7 @@ Type=Application
 Exec=user-installed-packages
 TryExec=user-installed-packages
 Icon=user-installed-packages
-Categories=System;MX-Setup;
+Categories=System;X-MX-Setup;
 # TRANSLATORS:
 # The desktop entry name will be displayed within the menu.
 Name=User Installed Packages
